@@ -36,39 +36,27 @@
                 <small class="text-white-50">TX TURF PROS LLC</small>
             </div>
 
+            {% set nav_items = [
+                ("/", "bi-speedometer2", "Dashboard", ""),
+                ("/customers", "bi-people", "Customers", "/customers"),
+                ("/quotes", "bi-file-earmark-text", "Quotes", "/quotes"),
+                ("/invoices", "bi-receipt", "Invoices", "/invoices"),
+                ("/schedule", "bi-calendar3", "Schedule", "/schedule"),
+                ("/field", "bi-truck", "Field Ops", "/field"),
+            ] %}
             <ul class="nav flex-column flex-grow-1 px-2 py-3">
+                {% for href, icon, label, prefix in nav_items %}
+                {% set is_active = (prefix == "" and request.url.path == "/") or (prefix != "" and request.url.path.startswith(prefix)) %}
                 <li class="nav-item">
-                    <a class="nav-link {% if request.url.path == '/' %}active{% endif %}" href="/">
-                        <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                    <a href="{{ href }}"
+                       style="color:{% if is_active %}#fff{% else %}rgba(255,255,255,.8){% endif %};background:{% if is_active %}#2d6a4f{% else %}transparent{% endif %};padding:.6rem 1rem;border-radius:.375rem;margin-bottom:2px;font-size:.9rem;display:flex;align-items:center;text-decoration:none;">
+                        <i class="bi {{ icon }} me-2"></i>{{ label }}
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.url.path.startswith('/customers') %}active{% endif %}" href="/customers">
-                        <i class="bi bi-people me-2"></i>Customers
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.url.path.startswith('/quotes') %}active{% endif %}" href="/quotes">
-                        <i class="bi bi-file-earmark-text me-2"></i>Quotes
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.url.path.startswith('/invoices') %}active{% endif %}" href="/invoices">
-                        <i class="bi bi-receipt me-2"></i>Invoices
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.url.path.startswith('/schedule') %}active{% endif %}" href="/schedule">
-                        <i class="bi bi-calendar3 me-2"></i>Schedule
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.url.path.startswith('/field') %}active{% endif %}" href="/field">
-                        <i class="bi bi-truck me-2"></i>Field Ops
-                    </a>
-                </li>
-                <li class="nav-item mt-2 pt-2 border-top border-white border-opacity-10">
-                    <a class="nav-link {% if request.url.path.startswith('/settings') %}active{% endif %}" href="/settings/pricing">
+                {% endfor %}
+                <li class="nav-item mt-2 pt-2" style="border-top:1px solid rgba(255,255,255,.1)">
+                    <a href="/settings/pricing"
+                       style="color:{% if request.url.path.startswith('/settings') %}#fff{% else %}rgba(255,255,255,.8){% endif %};background:{% if request.url.path.startswith('/settings') %}#2d6a4f{% else %}transparent{% endif %};padding:.6rem 1rem;border-radius:.375rem;font-size:.9rem;display:flex;align-items:center;text-decoration:none;">
                         <i class="bi bi-gear me-2"></i>Settings
                     </a>
                 </li>
