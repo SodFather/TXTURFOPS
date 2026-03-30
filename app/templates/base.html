@@ -48,15 +48,13 @@
                 {% for href, icon, label, prefix in nav_items %}
                 {% set is_active = (prefix == "" and request.url.path == "/") or (prefix != "" and request.url.path.startswith(prefix)) %}
                 <li class="nav-item">
-                    <a href="{{ href }}"
-                       style="color:{% if is_active %}#fff{% else %}rgba(255,255,255,.8){% endif %};background:{% if is_active %}#2d6a4f{% else %}transparent{% endif %};padding:.6rem 1rem;border-radius:.375rem;margin-bottom:2px;font-size:.9rem;display:flex;align-items:center;text-decoration:none;">
+                    <a href="{{ href }}" class="nav-link{% if is_active %} active{% endif %}">
                         <i class="bi {{ icon }} me-2"></i>{{ label }}
                     </a>
                 </li>
                 {% endfor %}
                 <li class="nav-item mt-2 pt-2" style="border-top:1px solid rgba(255,255,255,.1)">
-                    <a href="/settings/pricing"
-                       style="color:{% if request.url.path.startswith('/settings') %}#fff{% else %}rgba(255,255,255,.8){% endif %};background:{% if request.url.path.startswith('/settings') %}#2d6a4f{% else %}transparent{% endif %};padding:.6rem 1rem;border-radius:.375rem;font-size:.9rem;display:flex;align-items:center;text-decoration:none;">
+                    <a href="/settings/pricing" class="nav-link{% if request.url.path.startswith('/settings') %} active{% endif %}">
                         <i class="bi bi-gear me-2"></i>Settings
                     </a>
                 </li>
