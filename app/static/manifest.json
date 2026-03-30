@@ -1,0 +1,15 @@
+{
+  "name": "TurfOps — TX TURF PROS",
+  "short_name": "TurfOps",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1b4332",
+  "theme_color": "#2d6a4f",
+  "icons": [
+    {
+      "src": "/static/img/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

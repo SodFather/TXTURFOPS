@@ -41,9 +41,14 @@ body {
 
 .sidebar {
     width: var(--tf-sidebar-width);
-    background: var(--tf-primary-dark);
+    background: var(--tf-primary-dark) !important;
     min-height: 100vh;
     color: #fff;
+    /* Override Bootstrap offcanvas & nav-link custom properties */
+    --bs-offcanvas-bg: var(--tf-primary-dark);
+    --bs-offcanvas-color: #fff;
+    --bs-nav-link-color: rgba(255,255,255,.75);
+    --bs-nav-link-hover-color: #fff;
 }
 
 .sidebar-brand {
