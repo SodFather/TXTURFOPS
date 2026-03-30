@@ -8,7 +8,9 @@ from starlette.middleware.sessions import SessionMiddleware
 from .config import get_settings
 from .database import init_db
 from .auth import AuthMiddleware, verify_credentials
-from .routers import customers, dashboard
+from .routers import customers, dashboard, quotes, invoices
+from .routers import settings as settings_routes
+from .routers import scheduling, field
 
 settings = get_settings()
 BASE_DIR = Path(__file__).resolve().parent
@@ -28,6 +30,11 @@ app.state.templates = templates
 # --- Routers ---
 app.include_router(dashboard.router)
 app.include_router(customers.router)
+app.include_router(quotes.router)
+app.include_router(invoices.router)
+app.include_router(settings_routes.router)
+app.include_router(scheduling.router)
+app.include_router(field.router)
 
 
 # --- Auth routes ---

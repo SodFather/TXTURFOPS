@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Visit #{{ visit.id }}{% endblock %}
+{% set vcolors = {"Scheduled":"primary","In Progress":"warning","Completed":"success","Cancelled":"danger","Rescheduled":"secondary"} %}
+{% block content %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb mb-3"><li class="breadcrumb-item"><a href="/schedule">Schedule</a></li><li class="breadcrumb-item active">Visit #{{ visit.id }}</li></ol></nav>
+
+<div class="row justify-content-center"><div class="col-12 col-lg-8">
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-semibold">{{ visit.service_type }}</h5>
+        <span class="badge bg-{{ vcolors.get(visit.status,'secondary') }}">{{ visit.status }}</span>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 mb-3">
+            <div class="col-md-6"><div class="detail-label">Customer</div><a href="/customers/{{ visit.customer.id }}">{{ visit.customer.name }}</a></div>
+            <div class="col-md-6"><div class="detail-label">Scheduled</div>{{ visit.scheduled_date.strftime('%b %d, %Y %I:%M %p') if visit.scheduled_date else '—' }}</div>
+        </div>
+        {% if visit.start_time %}
+        <div class="row g-3 mb-3">
+            <div class="col-md-4"><div class="detail-label">Started</div>{{ visit.start_time.strftime('%I:%M %p') }}</div>
+            <div class="col-md-4"><div class="detail-label">Ended</div>{{ visit.end_time.strftime('%I:%M %p') if visit.end_time else '—' }}</div>
+            <div class="col-md-4"><div class="detail-label">Duration</div>{{ visit.duration_minutes or '—' }} min</div>
+        </div>
+        {% endif %}
+        {% if visit.temperature_f %}
+        <div class="row g-3 mb-3">
+            <div class="col-md-3"><div class="detail-label">Temp</div>{{ visit.temperature_f|int }}°F</div>
+            <div class="col-md-3"><div class="detail-label">Wind</div>{{ visit.wind_speed_mph|int }} mph {{ visit.wind_direction }}</div>
+            <div class="col-md-3"><div class="detail-label">Humidity</div>{{ visit.humidity_pct|int }}%</div>
+            <div class="col-md-3"><div class="detail-label">Conditions</div>{{ visit.conditions }}</div>
+        </div>
+        {% endif %}
+        {% if visit.products_applied %}<div class="mb-3"><div class="detail-label">Products Applied</div>{{ visit.products_applied }}</div>{% endif %}
+        {% if visit.notes %}<div class="mb-3"><div class="detail-label">Notes</div>{{ visit.notes }}</div>{% endif %}
+
+        <div class="d-flex gap-2 mt-3">
+            {% if visit.status == 'Scheduled' %}
+            <form method="post" action="/field/visit/{{ visit.id }}/start"><button class="btn btn-success"><i class="bi bi-play-fill me-1"></i>Start Job</button></form>
+            <form method="post" action="/schedule/visit/{{ visit.id }}/cancel"><button class="btn btn-outline-danger">Cancel</button></form>
+            {% elif visit.status == 'In Progress' %}
+            <a href="/field/visit/{{ visit.id }}" class="btn btn-warning"><i class="bi bi-check-lg me-1"></i>Complete Job</a>
+            {% endif %}
+            {% if visit.invoice_id %}
+            <a href="/invoices/{{ visit.invoice_id }}" class="btn btn-outline-primary"><i class="bi bi-receipt me-1"></i>View Invoice</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</div></div>
+{% endblock %}

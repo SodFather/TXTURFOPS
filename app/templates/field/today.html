@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Field Ops{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0 fw-bold">Today's Jobs</h4>
+    <span class="badge bg-primary rounded-pill fs-6">{{ completed_today }}/{{ total_today }}</span>
+</div>
+
+{% if weather %}
+<div class="alert alert-info py-2 d-flex align-items-center gap-3">
+    <i class="bi bi-cloud-sun fs-4"></i>
+    <div>
+        <strong>{{ weather.conditions }}</strong> — {{ weather.temperature_f|int }}°F,
+        Wind {{ weather.wind_speed_mph|int }}mph {{ weather.wind_direction }},
+        {{ weather.humidity_pct|int }}% humidity
+    </div>
+</div>
+{% endif %}
+
+{% if visits %}
+<div class="d-flex flex-column gap-3">
+    {% for v in visits %}
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                    <h5 class="mb-1">{{ v.customer.name }}</h5>
+                    <div class="text-muted small">{{ v.customer.address or '' }}</div>
+                    <span class="badge bg-primary bg-opacity-10 text-primary mt-1">{{ v.service_type }}</span>
+                </div>
+                {% if v.customer.phone %}
+                <a href="tel:{{ v.customer.phone }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-telephone"></i></a>
+                {% endif %}
+            </div>
+            {% if v.customer.notes %}
+            <div class="alert alert-light py-1 px-2 mb-2 small"><i class="bi bi-info-circle me-1"></i>{{ v.customer.notes }}</div>
+            {% endif %}
+            <div class="d-flex gap-2">
+                {% if v.status == 'Scheduled' %}
+                <form method="post" action="/field/visit/{{ v.id }}/start" class="flex-grow-1">
+                    <button class="btn btn-success btn-lg w-100"><i class="bi bi-play-fill me-1"></i>Start Job</button>
+                </form>
+                {% elif v.status == 'In Progress' %}
+                <a href="/field/visit/{{ v.id }}" class="btn btn-warning btn-lg flex-grow-1"><i class="bi bi-check-lg me-1"></i>Complete Job</a>
+                {% endif %}
+                {% if v.customer.latitude %}
+                <a href="https://www.google.com/maps/dir/?api=1&destination={{ v.customer.latitude }},{{ v.customer.longitude }}" target="_blank" class="btn btn-outline-primary btn-lg"><i class="bi bi-geo-alt"></i></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card border-0 shadow-sm"><div class="card-body text-center text-muted py-5">
+    <i class="bi bi-check-circle fs-1 d-block mb-2 text-success"></i>
+    <h5>All done for today!</h5>
+    <p>{{ completed_today }} job{{ 's' if completed_today != 1 else '' }} completed.</p>
+</div></div>
+{% endif %}
+{% endblock %}

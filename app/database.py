@@ -32,3 +32,13 @@ def get_db():
 def init_db():
     from . import models  # noqa: F401 — triggers model registration
     Base.metadata.create_all(bind=engine)
+
+    # Seed default data
+    from .models.price_tier import seed_price_tiers
+    from .models.lead import seed_neighborhoods
+    db = SessionLocal()
+    try:
+        seed_price_tiers(db)
+        seed_neighborhoods(db)
+    finally:
+        db.close()

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Pricing{% endblock %}
+{% block content %}
+<h4 class="fw-bold mb-4">Price Matrix</h4>
+<form method="post" action="/settings/pricing">
+{% for svc_type, tiers in grouped_tiers.items() %}
+<div class="card border-0 shadow-sm mb-3">
+    <div class="card-header bg-transparent"><h6 class="mb-0 fw-semibold">{{ svc_type }}</h6></div>
+    <div class="card-body">
+        <div class="row g-2">
+            {% for t in tiers %}
+            <div class="col-6 col-md-3">
+                <label class="form-label small">{{ t.size_tier_name }}</label>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text">$</span>
+                    <input type="number" name="price_{{ t.id }}" class="form-control" value="{{ '%.2f'|format(t.price) }}" step="0.01" min="0">
+                </div>
+                <small class="text-muted">{{ "{:,}".format(t.min_sqft) }}–{{ "{:,}".format(t.max_sqft) }} sqft</small>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+<button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Save Pricing</button>
+</form>
+{% endblock %}

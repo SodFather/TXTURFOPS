@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Quotes{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+    <h4 class="mb-0 fw-bold">Quotes</h4>
+    <a href="/quotes/new" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg me-1"></i>New Quote</a>
+</div>
+
+<div class="card border-0 shadow-sm mb-3">
+    <div class="card-body py-2">
+        <select class="form-select form-select-sm w-auto" onchange="location.href='/quotes?status='+this.value">
+            <option value="">All Statuses</option>
+            {% for s in statuses %}
+            <option value="{{ s }}" {% if status == s %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr><th>#</th><th>Customer</th><th>Total</th><th>Status</th><th class="d-none d-md-table-cell">Created</th><th class="text-end">Actions</th></tr>
+            </thead>
+            <tbody>
+                {% set qcolors = {"Draft":"secondary","Sent":"primary","Viewed":"info","Accepted":"success","Declined":"danger","Expired":"warning"} %}
+                {% for q in quotes %}
+                <tr>
+                    <td>{{ q.id }}</td>
+                    <td><a href="/quotes/{{ q.id }}">{{ q.customer.name }}</a></td>
+                    <td class="fw-semibold">${{ "%.2f"|format(q.total) }}</td>
+                    <td><span class="badge bg-{{ qcolors.get(q.status,'secondary') }}">{{ q.status }}</span></td>
+                    <td class="d-none d-md-table-cell small text-muted">{{ q.created_at.strftime('%b %d, %Y') if q.created_at else '' }}</td>
+                    <td class="text-end">
+                        <a href="/quotes/{{ q.id }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></a>
+                        <a href="/quotes/{{ q.id }}/pdf" target="_blank" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-pdf"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if not quotes %}
+    <div class="p-4 text-center text-muted"><i class="bi bi-file-earmark-text fs-1 d-block mb-2"></i>No quotes yet.</div>
+    {% endif %}
+</div>
+{% endblock %}

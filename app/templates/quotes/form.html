@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}New Quote{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb mb-3"><li class="breadcrumb-item"><a href="/quotes">Quotes</a></li><li class="breadcrumb-item active">New Quote</li></ol></nav>
+
+<div class="row justify-content-center">
+<div class="col-12 col-lg-10">
+<form method="post" action="/quotes/create" id="quoteForm">
+    <div class="card border-0 shadow-sm mb-3">
+        <div class="card-header bg-transparent"><h5 class="mb-0 fw-semibold">New Quote</h5></div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-12 col-md-8">
+                    <label class="form-label">Customer <span class="text-danger">*</span></label>
+                    <select name="customer_id" class="form-select" required id="customerSelect">
+                        <option value="">Select customer...</option>
+                        {% for c in customers %}
+                        <option value="{{ c.id }}" data-sqft="{{ c.property_size_sqft or 0 }}"
+                            {% if selected_customer and selected_customer.id == c.id %}selected{% endif %}>
+                            {{ c.name }} — {{ c.address or 'No address' }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="form-label">Valid For</label>
+                    <div class="input-group"><input type="number" name="valid_days" class="form-control" value="30" min="1"><span class="input-group-text">days</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-3">
+        <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+            <h6 class="mb-0 fw-semibold">Line Items</h6>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addLineItem()"><i class="bi bi-plus-lg me-1"></i>Add Item</button>
+        </div>
+        <div class="card-body" id="lineItems">
+            <div class="row g-2 mb-2 line-item" data-idx="0">
+                <div class="col-12 col-md-3">
+                    <select name="item_service_0" class="form-select form-select-sm svc-select" onchange="autoPrice(this)">
+                        <option value="">Service type...</option>
+                        {% for svc in service_types %}<option value="{{ svc }}">{{ svc }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="col-12 col-md-4"><input type="text" name="item_desc_0" class="form-control form-control-sm" placeholder="Description"></div>
+                <div class="col-4 col-md-2"><input type="number" name="item_qty_0" class="form-control form-control-sm" value="1" min="1" onchange="calcLine(this)"></div>
+                <div class="col-6 col-md-2"><input type="number" name="item_price_0" class="form-control form-control-sm" step="0.01" placeholder="Price" onchange="calcLine(this)"></div>
+                <div class="col-2 col-md-1 d-flex align-items-center"><button type="button" class="btn btn-sm btn-outline-danger" onclick="this.closest('.line-item').remove();calcTotal()"><i class="bi bi-trash"></i></button></div>
+            </div>
+        </div>
+        <div class="card-footer bg-transparent text-end">
+            <strong>Total: $<span id="quoteTotal">0.00</span></strong>
+        </div>
+    </div>
+
+    <div class="mb-3"><label class="form-label">Notes</label><textarea name="notes" class="form-control" rows="2"></textarea></div>
+    <div class="d-flex gap-2"><button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Create Quote</button><a href="/quotes" class="btn btn-outline-secondary">Cancel</a></div>
+</form>
+</div></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const priceMap = {{ price_map | tojson }};
+let lineIdx = 1;
+
+function addLineItem() {
+    const html = document.querySelector('.line-item').outerHTML
+        .replace(/name="item_(\w+)_\d+"/g, `name="item_$1_${lineIdx}"`)
+        .replace(/data-idx="\d+"/, `data-idx="${lineIdx}"`);
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    const el = div.firstElementChild;
+    el.querySelectorAll('input,select').forEach(i => { if(i.type!=='number'||i.name.includes('qty')) return; i.value=''; });
+    el.querySelector('select').value = '';
+    document.getElementById('lineItems').appendChild(el);
+    lineIdx++;
+}
+
+function autoPrice(sel) {
+    const row = sel.closest('.line-item');
+    const svc = sel.value;
+    const sqft = parseInt(document.getElementById('customerSelect')?.selectedOptions[0]?.dataset.sqft || 0);
+    const tiers = priceMap[svc] || [];
+    let price = 0;
+    for (const t of tiers) { if (sqft >= t.min && sqft <= t.max) { price = t.price; break; } }
+    if (!price && tiers.length) price = tiers[0].price;
+    row.querySelector('[name^="item_price_"]').value = price.toFixed(2);
+    calcTotal();
+}
+
+function calcLine(el) { calcTotal(); }
+
+function calcTotal() {
+    let total = 0;
+    document.querySelectorAll('.line-item').forEach(row => {
+        const qty = parseFloat(row.querySelector('[name^="item_qty_"]')?.value || 1);
+        const price = parseFloat(row.querySelector('[name^="item_price_"]')?.value || 0);
+        total += qty * price;
+    });
+    document.getElementById('quoteTotal').textContent = total.toFixed(2);
+}
+</script>
+{% endblock %}

@@ -48,27 +48,28 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#">
+                    <a class="nav-link {% if request.url.path.startswith('/quotes') %}active{% endif %}" href="/quotes">
                         <i class="bi bi-file-earmark-text me-2"></i>Quotes
-                        <span class="badge bg-secondary ms-auto">Phase 2</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#">
+                    <a class="nav-link {% if request.url.path.startswith('/invoices') %}active{% endif %}" href="/invoices">
                         <i class="bi bi-receipt me-2"></i>Invoices
-                        <span class="badge bg-secondary ms-auto">Phase 2</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#">
+                    <a class="nav-link {% if request.url.path.startswith('/schedule') %}active{% endif %}" href="/schedule">
                         <i class="bi bi-calendar3 me-2"></i>Schedule
-                        <span class="badge bg-secondary ms-auto">Phase 3</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#">
+                    <a class="nav-link {% if request.url.path.startswith('/field') %}active{% endif %}" href="/field">
                         <i class="bi bi-truck me-2"></i>Field Ops
-                        <span class="badge bg-secondary ms-auto">Phase 3</span>
+                    </a>
+                </li>
+                <li class="nav-item mt-2 pt-2 border-top border-white border-opacity-10">
+                    <a class="nav-link {% if request.url.path.startswith('/settings') %}active{% endif %}" href="/settings/pricing">
+                        <i class="bi bi-gear me-2"></i>Settings
                     </a>
                 </li>
             </ul>
