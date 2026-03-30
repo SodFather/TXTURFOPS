@@ -9,6 +9,7 @@ from ..models.invoice import Invoice, InvoiceStatus
 from ..models.quote import Quote, QuoteStatus
 from ..models.service_visit import ServiceVisit, VisitStatus
 from ..services.weather import get_forecast, parse_daily_forecast
+from ..services.ai_engine import generate_business_insight
 
 router = APIRouter()
 
@@ -85,6 +86,24 @@ async def dashboard(request: Request, db: Session = Depends(get_db)):
     forecast_data = await get_forecast(days=3)
     forecast = parse_daily_forecast(forecast_data) if forecast_data else []
 
+    # AI Insight
+    ai_insight = None
+    try:
+        stats = {
+            "total_customers": total_customers,
+            "active_customers": active_customers,
+            "pending_leads": pending_leads,
+            "month_revenue": float(month_revenue),
+            "outstanding_ar": float(outstanding),
+            "open_quotes": open_quotes,
+            "quote_pipeline_value": float(quote_value),
+            "zones": {z: c for z, c in zones},
+            "jobs_today": len(today_visits),
+        }
+        ai_insight = await generate_business_insight(stats)
+    except Exception:
+        pass
+
     return request.app.state.templates.TemplateResponse(
         request, "dashboard.html", {
             "total_customers": total_customers,
@@ -101,5 +120,6 @@ async def dashboard(request: Request, db: Session = Depends(get_db)):
             "followup_customers": followup,
             "today_visits": today_visits,
             "forecast": forecast,
+            "ai_insight": ai_insight,
         },
     )
