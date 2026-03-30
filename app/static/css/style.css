@@ -1,0 +1,172 @@
+/* ── TurfOps — TX TURF PROS Theme ───────────────────────────── */
+
+:root {
+    --tf-primary: #2d6a4f;
+    --tf-primary-dark: #1b4332;
+    --tf-primary-light: #40916c;
+    --tf-accent: #95d5b2;
+    --tf-sidebar-width: 240px;
+}
+
+/* ── Global ──────────────────────────────────────────────────── */
+
+body {
+    background: #f0f2f5;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.btn-primary {
+    background-color: var(--tf-primary);
+    border-color: var(--tf-primary);
+}
+.btn-primary:hover {
+    background-color: var(--tf-primary-dark);
+    border-color: var(--tf-primary-dark);
+}
+.btn-outline-primary {
+    color: var(--tf-primary);
+    border-color: var(--tf-primary);
+}
+.btn-outline-primary:hover {
+    background-color: var(--tf-primary);
+    border-color: var(--tf-primary);
+}
+.text-primary { color: var(--tf-primary) !important; }
+.bg-primary   { background-color: var(--tf-primary) !important; }
+
+a { color: var(--tf-primary); }
+a:hover { color: var(--tf-primary-dark); }
+
+/* ── Sidebar ─────────────────────────────────────────────────── */
+
+.sidebar {
+    width: var(--tf-sidebar-width);
+    background: var(--tf-primary-dark);
+    min-height: 100vh;
+    color: #fff;
+}
+
+.sidebar-brand {
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+.sidebar .nav-link {
+    color: rgba(255,255,255,.7);
+    padding: .6rem 1rem;
+    border-radius: .375rem;
+    margin-bottom: 2px;
+    font-size: .9rem;
+    display: flex;
+    align-items: center;
+}
+.sidebar .nav-link:hover {
+    color: #fff;
+    background: rgba(255,255,255,.1);
+}
+.sidebar .nav-link.active {
+    color: #fff;
+    background: var(--tf-primary);
+}
+.sidebar .nav-link.disabled {
+    color: rgba(255,255,255,.35);
+}
+.sidebar .nav-link .badge {
+    font-size: .65rem;
+    font-weight: 500;
+}
+
+/* ── Topbar (mobile) ─────────────────────────────────────────── */
+
+.topbar {
+    background: var(--tf-primary-dark);
+}
+
+/* ── Main content ────────────────────────────────────────────── */
+
+.main-content {
+    min-height: 100vh;
+}
+
+/* ── Login ────────────────────────────────────────────────────── */
+
+.login-body {
+    background: linear-gradient(135deg, var(--tf-primary-dark) 0%, var(--tf-primary) 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 1rem;
+}
+
+.login-logo {
+    font-size: 3rem;
+    color: var(--tf-primary);
+}
+
+/* ── Stat cards ───────────────────────────────────────────────── */
+
+.stat-card .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+.stat-card .stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+.stat-card .stat-label {
+    font-size: .8rem;
+}
+
+/* ── Detail view labels ──────────────────────────────────────── */
+
+.detail-label {
+    font-size: .75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: .15rem;
+    letter-spacing: .04em;
+}
+.detail-value {
+    font-size: .95rem;
+}
+
+/* ── Table helpers ────────────────────────────────────────────── */
+
+.cursor-pointer { cursor: pointer; }
+
+.table th {
+    font-size: .8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #6c757d;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+
+@media (max-width: 767.98px) {
+    .sidebar {
+        width: 280px;
+    }
+    .stat-card .stat-value {
+        font-size: 1.25rem;
+    }
+    .stat-card .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %}{{ "Edit " + customer.name if customer else "New Customer" }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="/customers">Customers</a></li>
+            <li class="breadcrumb-item active">{{ "Edit" if customer else "New Customer" }}</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-transparent">
+                <h5 class="mb-0 fw-semibold">{{ "Edit Customer" if customer else "Add New Customer" }}</h5>
+            </div>
+            <div class="card-body">
+                <form method="post"
+                      action="{{ '/customers/' ~ customer.id if customer else '/customers/create' }}">
+
+                    <!-- Contact info -->
+                    <h6 class="text-muted text-uppercase small fw-bold mb-3">Contact Information</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-12">
+                            <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="name" name="name"
+                                   value="{{ customer.name if customer else '' }}" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="address" name="address"
+                                   placeholder="123 Main St, Lakeway, TX 78734"
+                                   value="{{ customer.address if customer else '' }}">
+                            <div class="form-text">GPS coordinates and service zone auto-populate from address.</div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                   value="{{ customer.email if customer else '' }}">
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="phone" name="phone"
+                                   placeholder="(512) 555-0123"
+                                   value="{{ customer.phone if customer else '' }}">
+                        </div>
+                    </div>
+
+                    <!-- Property details -->
+                    <h6 class="text-muted text-uppercase small fw-bold mb-3">Property Details</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-12 col-md-4">
+                            <label for="property_size_sqft" class="form-label">Turf Area (sqft)</label>
+                            <input type="number" class="form-control" id="property_size_sqft"
+                                   name="property_size_sqft" min="0"
+                                   value="{{ customer.property_size_sqft if customer and customer.property_size_sqft else '' }}">
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label for="property_type" class="form-label">Property Type</label>
+                            <select class="form-select" id="property_type" name="property_type">
+                                {% for pt in property_types %}
+                                <option value="{{ pt }}"
+                                    {% if customer and customer.property_type == pt %}selected{% endif %}>
+                                    {{ pt }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label for="service_zone" class="form-label">Service Zone</label>
+                            <select class="form-select" id="service_zone" name="service_zone">
+                                <option value="">Auto-detect from address</option>
+                                {% for z in zones %}
+                                <option value="{{ z }}"
+                                    {% if customer and customer.service_zone == z %}selected{% endif %}>
+                                    {{ z }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Status & source -->
+                    <h6 class="text-muted text-uppercase small fw-bold mb-3">Status & Source</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-12 col-md-6">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-select" id="status" name="status">
+                                {% for s in statuses %}
+                                <option value="{{ s }}"
+                                    {% if customer and customer.status == s %}selected{% endif %}
+                                    {% if not customer and s == "Lead" %}selected{% endif %}>
+                                    {{ s }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="lead_source" class="form-label">Lead Source</label>
+                            <select class="form-select" id="lead_source" name="lead_source">
+                                <option value="">—</option>
+                                {% for ls in lead_sources %}
+                                <option value="{{ ls }}"
+                                    {% if customer and customer.lead_source == ls %}selected{% endif %}>
+                                    {{ ls }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="mb-4">
+                        <label for="notes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="3"
+                                  placeholder="Gate codes, dog in yard, irrigation zones, special instructions...">{{ customer.notes if customer else '' }}</textarea>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg me-1"></i>{{ "Save Changes" if customer else "Create Customer" }}
+                        </button>
+                        <a href="{{ '/customers/' ~ customer.id if customer else '/customers' }}" class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

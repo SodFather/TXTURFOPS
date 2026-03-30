@@ -1,0 +1,36 @@
+{% set status_colors = {"Lead": "warning", "Quoted": "info", "Active": "success", "Paused": "secondary", "Cancelled": "danger"} %}
+{% for c in customers %}
+<tr>
+    <td>
+        <a href="/customers/{{ c.id }}" class="text-decoration-none fw-medium">{{ c.name }}</a>
+        {% if c.email %}<br><small class="text-muted">{{ c.email }}</small>{% endif %}
+    </td>
+    <td class="d-none d-md-table-cell small">{{ c.address or "—" }}</td>
+    <td class="d-none d-lg-table-cell small">{{ c.phone or "—" }}</td>
+    <td>
+        {% if c.service_zone %}
+        <span class="badge bg-primary bg-opacity-10 text-primary">{{ c.service_zone }}</span>
+        {% else %}—{% endif %}
+    </td>
+    <td>
+        <span class="badge bg-{{ status_colors.get(c.status, 'secondary') }}">{{ c.status }}</span>
+    </td>
+    <td class="text-end">
+        <div class="btn-group btn-group-sm">
+            <a href="/customers/{{ c.id }}" class="btn btn-outline-primary" title="View">
+                <i class="bi bi-eye"></i>
+            </a>
+            <a href="/customers/{{ c.id }}/edit" class="btn btn-outline-secondary" title="Edit">
+                <i class="bi bi-pencil"></i>
+            </a>
+            <button class="btn btn-outline-danger" title="Delete"
+                    hx-delete="/customers/{{ c.id }}"
+                    hx-target="closest tr"
+                    hx-swap="outerHTML"
+                    hx-confirm="Delete {{ c.name }}? This cannot be undone.">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    </td>
+</tr>
+{% endfor %}
