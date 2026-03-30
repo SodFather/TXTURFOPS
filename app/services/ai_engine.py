@@ -1,6 +1,9 @@
 import os
 import json
+import logging
 import httpx
+
+log = logging.getLogger(__name__)
 
 CLAUDE_API_URL = "https://api.anthropic.com/v1/messages"
 MODEL = "claude-sonnet-4-20250514"
@@ -48,8 +51,9 @@ async def generate_content(prompt: str, system: str = None, max_tokens: int = 10
             if resp.status_code == 200:
                 data = resp.json()
                 return data["content"][0]["text"]
-    except (httpx.RequestError, ValueError, KeyError):
-        pass
+            log.error("Claude API %s: %s", resp.status_code, resp.text[:300])
+    except Exception as exc:
+        log.error("Claude API request failed: %s", exc)
     return None
 
 

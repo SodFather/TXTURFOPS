@@ -1,7 +1,10 @@
+import logging
 from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Request, Depends
 from sqlalchemy import func
 from sqlalchemy.orm import Session
+
+log = logging.getLogger(__name__)
 
 from ..database import get_db
 from ..models.customer import Customer, CustomerStatus
@@ -101,8 +104,8 @@ async def dashboard(request: Request, db: Session = Depends(get_db)):
             "jobs_today": len(today_visits),
         }
         ai_insight = await generate_business_insight(stats)
-    except Exception:
-        pass
+    except Exception as exc:
+        log.error("AI insight failed: %s", exc)
 
     return request.app.state.templates.TemplateResponse(
         request, "dashboard.html", {
