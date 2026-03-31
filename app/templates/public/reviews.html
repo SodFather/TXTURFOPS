@@ -1,0 +1,82 @@
+{% extends "public/base.html" %}
+
+{% block title %}Customer Reviews{% endblock %}
+{% block meta_desc %}See what Lakeway, Bee Cave & Westlake homeowners say about Texas Turf Pros lawn care services. Read reviews and leave your own.{% endblock %}
+
+{% block content %}
+
+<section class="hero text-center" style="padding:3.5rem 0 3rem">
+    <div class="container">
+        <h1>Customer Reviews</h1>
+        <p class="lead mb-0">Hear from homeowners across the Hill Country</p>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="text-center mb-5">
+                    <p class="text-muted">We're a new company building our reputation one lawn at a time. As we grow, customer reviews will appear here.</p>
+                    <div class="area-card d-inline-block px-4 py-3">
+                        <p class="mb-2 fw-bold text-green">Had a great experience?</p>
+                        <p class="small text-muted mb-3">A Google review helps other homeowners find trusted lawn care. It takes less than a minute and means the world to a small local business.</p>
+                        <a href="/review" class="btn btn-cta" target="_blank" rel="noopener">
+                            <i class="bi bi-google me-1"></i> Leave a Google Review
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Testimonials will be added here as they come in -->
+                <!--
+                <div class="testimonial-card mb-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="text-warning me-2">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                    <p class="mb-2">"Review text here."</p>
+                    <p class="small text-muted mb-0"><strong>Name</strong> &mdash; Neighborhood</p>
+                </div>
+                -->
+
+                <div class="text-center mt-5">
+                    <h3 class="mb-3">Our Commitment</h3>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="service-card text-center">
+                                <i class="bi bi-arrow-repeat text-green fs-2 mb-2"></i>
+                                <h6>Satisfaction Guaranteed</h6>
+                                <p class="small text-muted mb-0">Not happy? We re-treat at no charge.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="service-card text-center">
+                                <i class="bi bi-x-circle text-green fs-2 mb-2"></i>
+                                <h6>No Contracts</h6>
+                                <p class="small text-muted mb-0">Stay because you want to, not because you have to.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="service-card text-center">
+                                <i class="bi bi-envelope-check text-green fs-2 mb-2"></i>
+                                <h6>Post-Service Reports</h6>
+                                <p class="small text-muted mb-0">Detailed email after every treatment.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="hero text-center" style="padding:3.5rem 0 3rem">
+    <div class="container">
+        <h2 class="mb-3">See the Difference for Yourself</h2>
+        <p class="lead mb-4">Get a free quote and join our growing list of happy homeowners.</p>
+        <a href="/quote" class="btn btn-cta btn-lg px-4">Get a Free Quote</a>
+    </div>
+</section>
+
+{% endblock %}

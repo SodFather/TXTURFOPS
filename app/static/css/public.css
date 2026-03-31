@@ -1,0 +1,308 @@
+/* ── Texas Turf Pros — Public Site ─────────────────────────── */
+
+:root {
+    --tp-green: #2d6a4f;
+    --tp-green-dark: #1b4332;
+    --tp-green-light: #40916c;
+    --tp-accent: #95d5b2;
+    --tp-gold: #d4a843;
+    --tp-bg: #f8faf9;
+}
+
+/* ── Global ───────────────────────────────────────────────── */
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: #2c3e2d;
+    background: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 { font-weight: 700; }
+
+.text-green  { color: var(--tp-green) !important; }
+.bg-green    { background-color: var(--tp-green) !important; }
+.bg-green-dk { background-color: var(--tp-green-dark) !important; }
+
+/* ── Navbar ───────────────────────────────────────────────── */
+
+.navbar {
+    background: var(--tp-green-dark);
+    padding: .75rem 0;
+}
+.navbar-brand {
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+.navbar .nav-link {
+    color: rgba(255,255,255,.8) !important;
+    font-weight: 500;
+    font-size: .95rem;
+    padding: .5rem .85rem !important;
+    border-radius: .375rem;
+    transition: all .15s;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+    color: #fff !important;
+    background: rgba(255,255,255,.12);
+}
+.navbar-toggler {
+    border-color: rgba(255,255,255,.3);
+    padding: .35rem .6rem;
+}
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* ── CTA Buttons ──────────────────────────────────────────── */
+
+.btn-cta {
+    background: var(--tp-gold);
+    color: #1b2e1f;
+    font-weight: 700;
+    border: none;
+    border-radius: .5rem;
+    padding: .6rem 1.5rem;
+    transition: all .2s;
+}
+.btn-cta:hover {
+    background: #c49a35;
+    color: #1b2e1f;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(212,168,67,.35);
+}
+.btn-green {
+    background: var(--tp-green);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: .5rem;
+    padding: .6rem 1.5rem;
+}
+.btn-green:hover {
+    background: var(--tp-green-dark);
+    color: #fff;
+}
+
+/* ── Hero ─────────────────────────────────────────────────── */
+
+.hero {
+    background: linear-gradient(135deg, var(--tp-green-dark) 0%, var(--tp-green) 60%, var(--tp-green-light) 100%);
+    color: #fff;
+    padding: 5rem 0 4rem;
+    position: relative;
+    overflow: hidden;
+}
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #fff;
+    clip-path: ellipse(55% 100% at 50% 100%);
+}
+.hero h1 {
+    font-size: 2.75rem;
+    line-height: 1.15;
+}
+.hero .lead {
+    font-size: 1.15rem;
+    opacity: .9;
+}
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 2rem;
+    padding: .35rem .9rem;
+    font-size: .85rem;
+    backdrop-filter: blur(4px);
+}
+
+/* ── Section styling ──────────────────────────────────────── */
+
+section { padding: 4.5rem 0; }
+section:nth-child(even) { background: var(--tp-bg); }
+
+.section-label {
+    display: inline-block;
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--tp-green);
+    background: rgba(45,106,79,.08);
+    padding: .3rem .8rem;
+    border-radius: 2rem;
+    margin-bottom: .75rem;
+}
+
+/* ── Service cards ────────────────────────────────────────── */
+
+.service-card {
+    background: #fff;
+    border: 1px solid #e8ede9;
+    border-radius: 1rem;
+    padding: 2rem 1.5rem;
+    height: 100%;
+    transition: all .2s;
+}
+.service-card:hover {
+    border-color: var(--tp-accent);
+    box-shadow: 0 8px 24px rgba(45,106,79,.1);
+    transform: translateY(-3px);
+}
+.service-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--tp-green);
+    background: rgba(45,106,79,.08);
+    margin-bottom: 1rem;
+}
+
+/* ── Trust badges ─────────────────────────────────────────── */
+
+.trust-bar {
+    background: var(--tp-bg);
+    padding: 2rem 0;
+}
+.trust-item {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    font-weight: 600;
+    font-size: .95rem;
+    color: var(--tp-green-dark);
+}
+.trust-item i {
+    font-size: 1.5rem;
+    color: var(--tp-green);
+}
+
+/* ── Neighborhood / area cards ────────────────────────────── */
+
+.area-card {
+    background: #fff;
+    border: 1px solid #e8ede9;
+    border-radius: .75rem;
+    padding: 1.25rem;
+    transition: border-color .15s;
+}
+.area-card:hover { border-color: var(--tp-accent); }
+
+/* ── Pricing table ────────────────────────────────────────── */
+
+.price-tag {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--tp-green);
+}
+.price-label {
+    font-size: .8rem;
+    color: #6c757d;
+}
+
+/* ── FAQ accordion ────────────────────────────────────────── */
+
+.faq-accordion .accordion-button:not(.collapsed) {
+    background: rgba(45,106,79,.06);
+    color: var(--tp-green-dark);
+    font-weight: 600;
+    box-shadow: none;
+}
+.faq-accordion .accordion-button:focus { box-shadow: none; }
+
+/* ── Blog cards ───────────────────────────────────────────── */
+
+.blog-card {
+    background: #fff;
+    border: 1px solid #e8ede9;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all .2s;
+}
+.blog-card:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,.08);
+    transform: translateY(-2px);
+}
+.blog-card .card-body { padding: 1.5rem; }
+.blog-tag {
+    display: inline-block;
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--tp-green);
+    background: rgba(45,106,79,.08);
+    padding: .2rem .6rem;
+    border-radius: .25rem;
+}
+
+/* ── Quote form ───────────────────────────────────────────── */
+
+.quote-form-wrap {
+    background: #fff;
+    border: 1px solid #e8ede9;
+    border-radius: 1rem;
+    padding: 2.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,.06);
+}
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--tp-accent);
+    box-shadow: 0 0 0 .2rem rgba(149,213,178,.25);
+}
+.form-check-input:checked {
+    background-color: var(--tp-green);
+    border-color: var(--tp-green);
+}
+
+/* ── Testimonial cards ────────────────────────────────────── */
+
+.testimonial-card {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    border-left: 4px solid var(--tp-green);
+}
+
+/* ── Footer ───────────────────────────────────────────────── */
+
+.site-footer {
+    background: var(--tp-green-dark);
+    color: rgba(255,255,255,.7);
+    padding: 3.5rem 0 2rem;
+}
+.site-footer a {
+    color: rgba(255,255,255,.6);
+    text-decoration: none;
+    transition: color .15s;
+}
+.site-footer a:hover { color: #fff; }
+.site-footer ul li { margin-bottom: .4rem; }
+
+/* ── Responsive ───────────────────────────────────────────── */
+
+@media (max-width: 767.98px) {
+    .hero { padding: 3.5rem 0 3rem; }
+    .hero h1 { font-size: 2rem; }
+    section { padding: 3rem 0; }
+    .quote-form-wrap { padding: 1.5rem; }
+    .navbar .nav-link { padding: .6rem 0 !important; }
+}
+
+@media (max-width: 575.98px) {
+    .hero h1 { font-size: 1.75rem; }
+    .trust-item { font-size: .85rem; }
+}

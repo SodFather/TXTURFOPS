@@ -1,0 +1,145 @@
+{% extends "public/base.html" %}
+
+{% block title %}Get a Free Quote{% endblock %}
+{% block meta_desc %}Request a free lawn care quote from Texas Turf Pros. Weed control, fertilization, pest control & irrigation for Lakeway, Bee Cave, Westlake & Spicewood homes.{% endblock %}
+
+{% block content %}
+
+<section class="hero text-center" style="padding:3rem 0 2.5rem">
+    <div class="container">
+        <h1>Get Your Free Quote</h1>
+        <p class="lead mb-0">Tell us about your property and we'll recommend the right program.</p>
+    </div>
+</section>
+
+<section style="padding-top:2rem">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="quote-form-wrap">
+                    <form method="post" action="/quote" id="quoteForm">
+                        <input type="hidden" name="utm_source" value="{{ utm_source or '' }}">
+                        <input type="hidden" name="utm_medium" value="{{ utm_medium or '' }}">
+                        <input type="hidden" name="utm_campaign" value="{{ utm_campaign or '' }}">
+                        <input type="hidden" name="src" value="{{ src or '' }}">
+
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label class="form-label fw-bold" for="name">Full Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label fw-bold" for="phone">Phone *</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold" for="email">Email *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold" for="address">Property Address *</label>
+                                <input type="text" class="form-control" id="address" name="address" placeholder="123 Main St, Lakeway, TX 78734" required>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label fw-bold" for="lot_size">Estimated Lot Size</label>
+                                <select class="form-select" id="lot_size" name="lot_size">
+                                    <option value="">Not sure</option>
+                                    <option value="small">Small (under 5,000 sq ft)</option>
+                                    <option value="medium">Medium (5,000 - 10,000 sq ft)</option>
+                                    <option value="large">Large (10,000 - 20,000 sq ft)</option>
+                                    <option value="xl">XL (20,000+ sq ft)</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label fw-bold" for="heard_from">How Did You Hear About Us?</label>
+                                <select class="form-select" id="heard_from" name="heard_from">
+                                    <option value="">Select one</option>
+                                    <option value="google">Google Search</option>
+                                    <option value="facebook">Facebook / Instagram</option>
+                                    <option value="nextdoor">Nextdoor</option>
+                                    <option value="referral">Friend / Neighbor Referral</option>
+                                    <option value="door_hanger">Door Hanger / Flyer</option>
+                                    <option value="yard_sign">Yard Sign</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Services Interested In</label>
+                                <div class="row g-2">
+                                    <div class="col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="services" value="weed_control" id="svcWeed">
+                                            <label class="form-check-label" for="svcWeed">Weed Control</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="services" value="fertilization" id="svcFert">
+                                            <label class="form-check-label" for="svcFert">Fertilization</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="services" value="pest_control" id="svcPest">
+                                            <label class="form-check-label" for="svcPest">Pest & Grub Control</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="services" value="irrigation" id="svcIrr">
+                                            <label class="form-check-label" for="svcIrr">Irrigation</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="services" value="full_program" id="svcFull">
+                                            <label class="form-check-label" for="svcFull">Full 5-Round Program</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="services" value="not_sure" id="svcUnsure">
+                                            <label class="form-check-label" for="svcUnsure">Not sure &mdash; advise me</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold" for="notes">Anything else we should know?</label>
+                                <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Grass type, specific weed problems, etc."></textarea>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <button type="submit" class="btn btn-cta btn-lg w-100">
+                                    <i class="bi bi-send-fill me-2"></i>Request My Free Quote
+                                </button>
+                                <p class="text-muted small text-center mt-2 mb-0">We'll get back to you within 24 hours. No spam, ever.</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-4 offset-lg-1 d-none d-lg-block">
+                <div class="service-card mb-4">
+                    <h5 class="text-green mb-3"><i class="bi bi-telephone-fill me-2"></i>Prefer to Call?</h5>
+                    <p class="mb-2">We're happy to chat through your lawn care needs over the phone.</p>
+                    <a href="tel:+15129837070" class="btn btn-green w-100"><i class="bi bi-telephone-fill me-1"></i> (512) 983-7070</a>
+                </div>
+                <div class="service-card mb-4">
+                    <h5 class="text-green mb-3"><i class="bi bi-clock-fill me-2"></i>What Happens Next?</h5>
+                    <ol class="small mb-0 ps-3">
+                        <li class="mb-2">We review your property details</li>
+                        <li class="mb-2">We call or email with a custom quote</li>
+                        <li class="mb-2">You approve and we schedule your first treatment</li>
+                        <li>Your lawn starts looking better within weeks</li>
+                    </ol>
+                </div>
+                <div class="service-card">
+                    <h5 class="text-green mb-3"><i class="bi bi-shield-check me-2"></i>Our Guarantee</h5>
+                    <p class="small mb-0">Not satisfied? We'll re-treat at no charge. No contracts &mdash; cancel anytime.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

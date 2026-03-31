@@ -1,24 +1,19 @@
 from pathlib import Path
-from fastapi import FastAPI, Request, Form
-from fastapi.responses import RedirectResponse
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
 from .config import get_settings
 from .database import init_db
-from .auth import AuthMiddleware, verify_credentials
-from .routers import customers, dashboard, quotes, invoices
-from .routers import settings as settings_routes
-from .routers import scheduling, field
+from .routers import public
 
 settings = get_settings()
 BASE_DIR = Path(__file__).resolve().parent
 
 app = FastAPI(title=settings.app_name, docs_url=None, redoc_url=None)
 
-# --- Middleware (last-added = outermost = runs first) ---
-app.add_middleware(AuthMiddleware)
+# --- Middleware ---
 app.add_middleware(SessionMiddleware, secret_key=settings.secret_key)
 
 # --- Static files & templates ---
@@ -26,37 +21,8 @@ app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="stat
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 app.state.templates = templates
 
-
-# --- Routers ---
-app.include_router(dashboard.router)
-app.include_router(customers.router)
-app.include_router(quotes.router)
-app.include_router(invoices.router)
-app.include_router(settings_routes.router)
-app.include_router(scheduling.router)
-app.include_router(field.router)
-
-
-# --- Auth routes ---
-@app.get("/login")
-async def login_page(request: Request):
-    return templates.TemplateResponse(request, "login.html")
-
-
-@app.post("/login")
-async def login(request: Request, username: str = Form(...), password: str = Form(...)):
-    if verify_credentials(username, password):
-        request.session["user"] = username
-        return RedirectResponse(url="/", status_code=303)
-    return templates.TemplateResponse(
-        request, "login.html", {"error": "Invalid username or password"}
-    )
-
-
-@app.get("/logout")
-async def logout(request: Request):
-    request.session.clear()
-    return RedirectResponse(url="/login", status_code=303)
+# --- Public marketing site ---
+app.include_router(public.router)
 
 
 # --- Startup ---

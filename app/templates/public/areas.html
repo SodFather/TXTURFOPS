@@ -1,0 +1,96 @@
+{% extends "public/base.html" %}
+
+{% block title %}Service Areas — Lakeway, Westlake, Bee Cave, Spicewood{% endblock %}
+{% block meta_desc %}Texas Turf Pros serves Lakeway, Westlake Hills, Bee Cave & Spicewood. See neighborhoods we cover including Rough Hollow, Flintrock Falls, Falconhead, Spanish Oaks & more.{% endblock %}
+
+{% block content %}
+
+<section class="hero text-center" style="padding:3.5rem 0 3rem">
+    <div class="container">
+        <h1>Our Service Area</h1>
+        <p class="lead mb-0">Professional lawn care across Austin's Hill Country communities</p>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="text-center mb-5">
+            <p class="text-muted mx-auto" style="max-width:600px">We serve homeowners in the following communities. Don't see your neighborhood? <a href="/quote">Request a quote</a> &mdash; we may still be able to help.</p>
+            <p class="fw-bold text-green">ZIP codes: 78746 &bull; 78734 &bull; 78738 &bull; 78732 &bull; 78733 &bull; 78669</p>
+        </div>
+
+        <!-- Lakeway -->
+        <div class="mb-5" id="lakeway">
+            <h2 class="mb-1"><i class="bi bi-geo-alt-fill text-green me-2"></i>Lakeway</h2>
+            <p class="text-muted mb-3">Our home base &mdash; serving neighborhoods across 78734, 78738 &amp; 78732.</p>
+            <div class="row g-3">
+                {% for n in zones.lakeway %}
+                <div class="col-sm-6 col-md-4 col-lg-3" id="{{ n.slug }}">
+                    <div class="area-card h-100">
+                        <h6 class="mb-1">{{ n.name }}</h6>
+                        <p class="small text-muted mb-0">~{{ n.homes }} homes</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Westlake -->
+        <div class="mb-5" id="westlake">
+            <h2 class="mb-1"><i class="bi bi-geo-alt-fill text-green me-2"></i>Westlake Hills</h2>
+            <p class="text-muted mb-3">Premium lawn care for 78746.</p>
+            <div class="row g-3">
+                {% for n in zones.westlake %}
+                <div class="col-sm-6 col-md-4 col-lg-3" id="{{ n.slug }}">
+                    <div class="area-card h-100">
+                        <h6 class="mb-1">{{ n.name }}</h6>
+                        <p class="small text-muted mb-0">~{{ n.homes }} homes</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Bee Cave -->
+        <div class="mb-5" id="bee-caves">
+            <h2 class="mb-1"><i class="bi bi-geo-alt-fill text-green me-2"></i>Bee Cave</h2>
+            <p class="text-muted mb-3">Serving 78733 including Falconhead, Spanish Oaks &amp; more.</p>
+            <div class="row g-3">
+                {% for n in zones.bee_caves %}
+                <div class="col-sm-6 col-md-4 col-lg-3" id="{{ n.slug }}">
+                    <div class="area-card h-100">
+                        <h6 class="mb-1">{{ n.name }}</h6>
+                        <p class="small text-muted mb-0">~{{ n.homes }} homes</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Spicewood -->
+        <div class="mb-5" id="spicewood">
+            <h2 class="mb-1"><i class="bi bi-geo-alt-fill text-green me-2"></i>Spicewood</h2>
+            <p class="text-muted mb-3">Covering 78669 from West Cypress Hills to Briarcliff.</p>
+            <div class="row g-3">
+                {% for n in zones.spicewood %}
+                <div class="col-sm-6 col-md-4 col-lg-3" id="{{ n.slug }}">
+                    <div class="area-card h-100">
+                        <h6 class="mb-1">{{ n.name }}</h6>
+                        <p class="small text-muted mb-0">~{{ n.homes }} homes</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="hero text-center" style="padding:3.5rem 0 3rem">
+    <div class="container">
+        <h2 class="mb-3">Live in the Area?</h2>
+        <p class="lead mb-4">Get a free quote for your lawn &mdash; takes less than a minute.</p>
+        <a href="/quote" class="btn btn-cta btn-lg px-4">Request a Free Quote</a>
+    </div>
+</section>
+
+{% endblock %}

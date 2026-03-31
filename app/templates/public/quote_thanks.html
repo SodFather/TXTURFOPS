@@ -1,0 +1,29 @@
+{% extends "public/base.html" %}
+
+{% block title %}Quote Request Received{% endblock %}
+
+{% block content %}
+
+<section style="padding:6rem 0">
+    <div class="container text-center">
+        <div class="mx-auto" style="max-width:500px">
+            <div class="mb-4">
+                <span style="font-size:4rem;color:var(--tp-green)"><i class="bi bi-check-circle-fill"></i></span>
+            </div>
+            <h1 class="h2 mb-3">Thanks, {{ name }}!</h1>
+            <p class="lead text-muted mb-4">Your quote request has been received. We'll review your property details and get back to you within 24 hours.</p>
+            <div class="area-card text-start mb-4">
+                <p class="small mb-1"><strong>What happens next:</strong></p>
+                <ol class="small mb-0 ps-3">
+                    <li class="mb-1">Cory reviews your property and service needs</li>
+                    <li class="mb-1">You'll receive a call or email with your custom quote</li>
+                    <li>Once approved, we schedule your first treatment</li>
+                </ol>
+            </div>
+            <p class="text-muted small mb-4">Questions in the meantime? Call <a href="tel:+15129837070" class="text-green fw-bold">(512) 983-7070</a></p>
+            <a href="/" class="btn btn-green">Back to Home</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

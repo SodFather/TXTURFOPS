@@ -1,0 +1,220 @@
+{% extends "public/base.html" %}
+
+{% block title %}Lawn Care Services & Pricing{% endblock %}
+{% block meta_desc %}Weed control, fertilization, pest control, grub prevention & irrigation services from Texas Turf Pros in Lakeway, TX. TDA Licensed. See pricing & get a free quote.{% endblock %}
+
+{% block content %}
+
+<!-- ── Header ─────────────────────────────────────────────── -->
+<section class="hero text-center" style="padding:3.5rem 0 3rem">
+    <div class="container">
+        <h1>Our Lawn Care Services</h1>
+        <p class="lead mb-0">Expert treatments tailored for Central Texas turf and soil conditions.</p>
+    </div>
+</section>
+
+<!-- ── Weed Control ───────────────────────────────────────── -->
+<section id="weed-control">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <span class="section-label">Core Service</span>
+                <h2><i class="bi bi-droplet-fill text-green me-2"></i>Weed Control</h2>
+                <p>Our weed control program uses a two-pronged approach to keep your lawn weed-free year-round:</p>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <div class="area-card h-100">
+                            <h6 class="text-green">Pre-Emergent</h6>
+                            <p class="small text-muted mb-0">Applied in late winter and early spring (Rounds 1 &amp; 2) to create a barrier that prevents weed seeds from germinating. Products like Barricade and Dimension stop crabgrass, dandelions, and other weeds before they appear.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="area-card h-100">
+                            <h6 class="text-green">Post-Emergent</h6>
+                            <p class="small text-muted mb-0">Targeted spot treatments for weeds that break through, active March through November. We use selective herbicides like Celsius, MSM Turf, and Certainty that kill weeds without harming your Bermuda or St. Augustine turf.</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="small text-muted">Common weeds we treat: crabgrass, dandelions, clover, nutsedge, dallisgrass, henbit, chickweed, spurge.</p>
+            </div>
+            <div class="col-lg-5">
+                <div class="service-card text-center">
+                    <h5 class="mb-4">Weed Control Pricing</h5>
+                    <table class="table table-sm">
+                        <thead><tr><th>Lot Size</th><th>Price</th></tr></thead>
+                        <tbody>
+                            <tr><td>Small (&lt;5,000 sq ft)</td><td class="text-green fw-bold">$55</td></tr>
+                            <tr><td>Medium (5,000-10,000)</td><td class="text-green fw-bold">$75</td></tr>
+                            <tr><td>Large (10,000-20,000)</td><td class="text-green fw-bold">$110</td></tr>
+                            <tr><td>XL (20,000+)</td><td class="text-green fw-bold">$150</td></tr>
+                        </tbody>
+                    </table>
+                    <a href="/quote" class="btn btn-cta w-100">Get a Weed Control Quote</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Fertilization ──────────────────────────────────────── -->
+<section id="fertilization">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <span class="section-label">Core Service</span>
+                <h2><i class="bi bi-flower1 text-green me-2"></i>Fertilization</h2>
+                <p>Central Texas lawns face unique challenges: alkaline clay soils, intense summer heat, and limestone-based water. Our fertilization programs are formulated specifically for these conditions.</p>
+                <ul class="mb-3">
+                    <li><strong>Spring feeding</strong> (Mar-May) &mdash; Jumpstart green-up with slow-release nitrogen</li>
+                    <li><strong>Summer nutrition</strong> (Jun-Jul) &mdash; Iron and micronutrients for color without burn</li>
+                    <li><strong>Fall program</strong> (Sep-Oct) &mdash; Potassium-heavy feed for root development</li>
+                    <li><strong>Winterizer</strong> (Nov-Dec) &mdash; Final feeding to strengthen roots for dormancy</li>
+                </ul>
+                <p class="small text-muted">We fertilize Bermuda, St. Augustine, Zoysia, and Buffalo grass. Products and timing adjusted for your specific turf type.</p>
+            </div>
+            <div class="col-lg-5">
+                <div class="service-card text-center">
+                    <h5 class="mb-4">Fertilization Pricing</h5>
+                    <table class="table table-sm">
+                        <thead><tr><th>Lot Size</th><th>Price</th></tr></thead>
+                        <tbody>
+                            <tr><td>Small (&lt;5,000 sq ft)</td><td class="text-green fw-bold">$55</td></tr>
+                            <tr><td>Medium (5,000-10,000)</td><td class="text-green fw-bold">$75</td></tr>
+                            <tr><td>Large (10,000-20,000)</td><td class="text-green fw-bold">$110</td></tr>
+                            <tr><td>XL (20,000+)</td><td class="text-green fw-bold">$150</td></tr>
+                        </tbody>
+                    </table>
+                    <a href="/quote" class="btn btn-cta w-100">Get a Fertilization Quote</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Pest & Grub Control ────────────────────────────────── -->
+<section id="pest-control">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <span class="section-label">Protection</span>
+                <h2><i class="bi bi-bug-fill text-green me-2"></i>Pest &amp; Grub Control</h2>
+                <p>Lawn-damaging insects are a year-round threat in Central Texas, with peak activity from April through October. We offer both preventive and curative treatments.</p>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <div class="area-card h-100">
+                            <h6 class="text-green">Grub Preventive</h6>
+                            <p class="small text-muted mb-0">Applied May-June before grub eggs hatch. Imidacloprid-based treatment provides season-long protection against white grubs that destroy roots.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="area-card h-100">
+                            <h6 class="text-green">Surface Pest Control</h6>
+                            <p class="small text-muted mb-0">Bifenthrin-based treatments for fire ants, chinch bugs, armyworms, and other surface feeders. Applied as-needed or preventively.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="service-card text-center">
+                    <h5 class="mb-4">Pest Control Pricing</h5>
+                    <table class="table table-sm">
+                        <thead><tr><th>Service</th><th>Small</th><th>XL</th></tr></thead>
+                        <tbody>
+                            <tr><td>Pest Control</td><td class="text-green fw-bold">$65</td><td class="text-green fw-bold">$175</td></tr>
+                            <tr><td>Grub Preventive</td><td class="text-green fw-bold">$70</td><td class="text-green fw-bold">$185</td></tr>
+                        </tbody>
+                    </table>
+                    <a href="/quote" class="btn btn-cta w-100">Get a Pest Control Quote</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Irrigation ─────────────────────────────────────────── -->
+<section id="irrigation">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <span class="section-label">Maintenance</span>
+                <h2><i class="bi bi-moisture text-green me-2"></i>Irrigation Services</h2>
+                <p>A properly functioning irrigation system is critical in Central Texas, especially during our brutal summers (Jun-Sep). We offer:</p>
+                <ul class="mb-3">
+                    <li><strong>System diagnostic</strong> &mdash; Full zone-by-zone inspection, identify leaks, broken heads, coverage gaps</li>
+                    <li><strong>Head repairs &amp; replacement</strong> &mdash; Fix or replace broken rotors, pop-ups, and nozzles</li>
+                    <li><strong>Seasonal adjustments</strong> &mdash; Program your controller for optimal watering schedules</li>
+                </ul>
+            </div>
+            <div class="col-lg-5">
+                <div class="service-card text-center">
+                    <h5 class="mb-4">Irrigation Pricing</h5>
+                    <table class="table table-sm">
+                        <thead><tr><th>Service</th><th>Price</th></tr></thead>
+                        <tbody>
+                            <tr><td>Diagnostic</td><td class="text-green fw-bold">$85 flat rate</td></tr>
+                            <tr><td>Repair</td><td class="text-green fw-bold">$125 flat rate</td></tr>
+                        </tbody>
+                    </table>
+                    <a href="/quote" class="btn btn-cta w-100">Schedule an Irrigation Check</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── FAQ ─────────────────────────────────────────────────── -->
+<section>
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="section-label">Common Questions</span>
+            <h2>Lawn Care FAQ</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion faq-accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">When should I start pre-emergent in Central Texas?</button></h3>
+                        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body small">Late January to mid-February is ideal for the first application, with a second round in late March to early April. This two-application approach creates a longer-lasting barrier against summer weeds like crabgrass. Soil temperatures need to be consistently below 55&deg;F when you apply.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">How often should my lawn be fertilized?</button></h3>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body small">In Central Texas, we recommend 4-5 fertilizer applications per year, timed with the growing season: spring green-up (March), late spring (May), summer (July), fall (September-October), and a winterizer (November-December). Over-fertilizing is worse than under-fertilizing &mdash; it burns turf and feeds weeds.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">Is it safe for my kids and pets?</button></h3>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body small">We follow all TDA (Texas Department of Agriculture) guidelines for application safety. After treatment, we recommend keeping children and pets off the lawn until the product has dried, typically 1-2 hours. We'll include specific care instructions with every service visit email.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">What types of grass do you treat?</button></h3>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body small">We treat all common Central Texas warm-season turf grasses: Bermuda, St. Augustine, Zoysia, and Buffalo grass. Each grass type has different product requirements &mdash; for example, St. Augustine is sensitive to certain herbicides that work fine on Bermuda. We tailor every treatment to your specific turf.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">Do I need to be home for service?</button></h3>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body small">No. As long as we have access to your lawn, we can treat while you're away. After every visit, you'll receive a detailed email with what we applied, care instructions, and when to expect your next treatment.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── CTA ─────────────────────────────────────────────────── -->
+<section class="hero text-center" style="padding:3.5rem 0 3rem">
+    <div class="container">
+        <h2 class="mb-3">Let's Get Your Lawn on a Program</h2>
+        <p class="lead mb-4">Tell us about your property and we'll recommend the right plan.</p>
+        <a href="/quote" class="btn btn-cta btn-lg px-4">Get Your Free Quote</a>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Professional Lawn Care{% endblock %} | Texas Turf Pros — Lakeway, TX</title>
+    <meta name="description" content="{% block meta_desc %}Texas Turf Pros provides professional weed control, fertilization, pest control & irrigation services to Lakeway, Bee Cave, Westlake & Spicewood. TDA Licensed. Free quotes.{% endblock %}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ request.url }}">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Texas Turf Pros">
+    <meta property="og:title" content="{% block og_title %}Texas Turf Pros — Professional Lawn Care{% endblock %}">
+    <meta property="og:description" content="{% block og_desc %}Professional weed control & fertilization for Lakeway, Bee Cave, Westlake & Spicewood homes.{% endblock %}">
+    <meta property="og:url" content="{{ request.url }}">
+
+    <!-- Favicon & Theme -->
+    <link rel="icon" type="image/svg+xml" href="/static/img/favicon.svg">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#2d6a4f">
+
+    <!-- Bootstrap 5 + Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="/static/css/public.css" rel="stylesheet">
+
+    <!-- Schema.org LocalBusiness -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Texas Turf Pros",
+        "description": "Professional weed control, fertilization, pest control and irrigation services for Lakeway, Bee Cave, Westlake and Spicewood, TX.",
+        "url": "{{ request.base_url }}",
+        "telephone": "(512) 983-7070",
+        "areaServed": [
+            {"@type": "City", "name": "Lakeway", "address": {"@type": "PostalAddress", "addressRegion": "TX"}},
+            {"@type": "City", "name": "Bee Cave", "address": {"@type": "PostalAddress", "addressRegion": "TX"}},
+            {"@type": "City", "name": "Westlake Hills", "address": {"@type": "PostalAddress", "addressRegion": "TX"}},
+            {"@type": "City", "name": "Spicewood", "address": {"@type": "PostalAddress", "addressRegion": "TX"}}
+        ],
+        "priceRange": "$$",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Lakeway",
+            "addressRegion": "TX",
+            "postalCode": "78734"
+        },
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Lawn Care Services",
+            "itemListElement": [
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Weed Control"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Lawn Fertilization"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Pest & Grub Control"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Irrigation Repair"}}
+            ]
+        }
+    }
+    </script>
+
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+
+<!-- ── Navbar ──────────────────────────────────────────────── -->
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <svg width="36" height="36" viewBox="0 0 64 64" class="me-2">
+                <rect width="64" height="64" rx="12" fill="#2d6a4f"/>
+                <text x="32" y="44" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="700" font-size="32" fill="#fff">T</text>
+            </svg>
+            <span>Texas Turf Pros</span>
+        </a>
+        <div class="d-lg-none">
+            <a href="tel:+15129837070" class="btn btn-sm btn-outline-light me-2">
+                <i class="bi bi-telephone-fill"></i>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navMain">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link{% if request.url.path == '/' %} active{% endif %}" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link{% if '/services' in request.url.path %} active{% endif %}" href="/services">Services</a></li>
+                <li class="nav-item"><a class="nav-link{% if '/areas' in request.url.path %} active{% endif %}" href="/areas">Service Areas</a></li>
+                <li class="nav-item"><a class="nav-link{% if '/about' in request.url.path %} active{% endif %}" href="/about">About</a></li>
+                <li class="nav-item"><a class="nav-link{% if '/blog' in request.url.path %} active{% endif %}" href="/blog">Lawn Tips</a></li>
+            </ul>
+            <div class="d-flex align-items-center ms-lg-3 mt-3 mt-lg-0">
+                <a href="tel:+15129837070" class="btn btn-outline-light me-2 d-none d-lg-inline-flex align-items-center">
+                    <i class="bi bi-telephone-fill me-1"></i> (512) 983-7070
+                </a>
+                <a href="/quote" class="btn btn-cta">Get Free Quote</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- ── Main Content ───────────────────────────────────────── -->
+{% block content %}{% endblock %}
+
+<!-- ── Footer ─────────────────────────────────────────────── -->
+<footer class="site-footer">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4 mb-3">
+                <h5 class="text-white mb-3">Texas Turf Pros</h5>
+                <p class="text-white-50 small mb-2">Professional weed control & fertilization for Austin's Hill Country communities. TDA Licensed Applicator.</p>
+                <p class="text-white-50 small mb-0">TX TURF PROS LLC &bull; Lakeway, TX</p>
+            </div>
+            <div class="col-6 col-lg-2">
+                <h6 class="text-white mb-3">Services</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="/services#weed-control">Weed Control</a></li>
+                    <li><a href="/services#fertilization">Fertilization</a></li>
+                    <li><a href="/services#pest-control">Pest Control</a></li>
+                    <li><a href="/services#irrigation">Irrigation</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-lg-2">
+                <h6 class="text-white mb-3">Service Areas</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="/areas#lakeway">Lakeway</a></li>
+                    <li><a href="/areas#westlake">Westlake</a></li>
+                    <li><a href="/areas#bee-caves">Bee Cave</a></li>
+                    <li><a href="/areas#spicewood">Spicewood</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-4">
+                <h6 class="text-white mb-3">Get In Touch</h6>
+                <p class="small mb-2">
+                    <a href="tel:+15129837070" class="text-white"><i class="bi bi-telephone-fill me-2"></i>(512) 983-7070</a>
+                </p>
+                <p class="small mb-3">
+                    <a href="mailto:cory@txturfpros.com" class="text-white"><i class="bi bi-envelope-fill me-2"></i>cory@txturfpros.com</a>
+                </p>
+                <a href="/quote" class="btn btn-cta btn-sm">Request a Free Quote</a>
+            </div>
+        </div>
+        <hr class="border-secondary my-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <p class="text-white-50 small mb-2 mb-md-0">&copy; {{ now.year }} TX TURF PROS LLC. All rights reserved.</p>
+            <p class="text-white-50 small mb-0">TDA Licensed Applicator &bull; Insured &bull; Locally Owned</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
