@@ -14,6 +14,12 @@ class Settings(BaseSettings):
     service_area_lat: float = 30.3913
     service_area_lon: float = -97.9461
 
+    # Analytics & ads (set in Railway env vars when ready)
+    ga_measurement_id: str = ""       # e.g. G-XXXXXXXXXX
+    google_ads_id: str = ""           # e.g. AW-XXXXXXXXX
+    google_ads_conversion: str = ""   # e.g. AW-XXXXXXXXX/XXXXXXXX
+    fb_pixel_id: str = ""             # e.g. 1234567890
+
     model_config = {"env_file": ".env", "extra": "ignore"}
 
 

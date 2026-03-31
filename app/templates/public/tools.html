@@ -1,0 +1,225 @@
+{% extends "public/base.html" %}
+{% block title %}Marketing Tools{% endblock %}
+{% block meta_desc %}Internal marketing tools for Texas Turf Pros.{% endblock %}
+
+{% block content %}
+<section style="padding:2rem 0">
+    <div class="container">
+        <h1 class="h3 mb-1">Marketing Command Center</h1>
+        <p class="text-muted mb-4">Everything you need to run your campaigns. Copy, paste, done.</p>
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs mb-4" role="tablist">
+            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#content">Content Calendar</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#google">Google Ads</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#facebook">Facebook Ads</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#nextdoor">Nextdoor</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#doorhangers">Door Hangers</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#setup">Setup Checklist</a></li>
+        </ul>
+
+        <div class="tab-content">
+
+<!-- ════════ CONTENT CALENDAR ════════ -->
+<div class="tab-pane fade show active" id="content">
+<p class="text-muted mb-3">30 days of posts for Facebook, Instagram, Nextdoor, and Google Business. Click any post to copy it.</p>
+
+{% for week_num, week in content_calendar.items() %}
+<h5 class="mt-4 mb-3 text-green">{{ week_num }}</h5>
+<div class="row g-3">
+    {% for post in week %}
+    <div class="col-md-6">
+        <div class="area-card h-100 post-card" onclick="copyPost(this)" style="cursor:pointer">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="blog-tag">{{ post.platform }}</span>
+                <small class="text-muted">{{ post.day }}</small>
+            </div>
+            <p class="small mb-1 fw-bold">{{ post.topic }}</p>
+            <p class="small text-muted mb-0 post-text">{{ post.text }}</p>
+            <div class="text-end mt-2"><small class="text-green opacity-0 copied-badge">Copied!</small></div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+</div>
+
+<!-- ════════ GOOGLE ADS ════════ -->
+<div class="tab-pane fade" id="google">
+<h5 class="text-green mb-3">Google Ads — Ready to Paste</h5>
+<p class="text-muted small mb-4">Create a Google Ads account at <strong>ads.google.com</strong>. Set up a Search campaign with these ad groups. Budget: $150-300/mo. Location: 12mi radius around Lakeway, TX + ZIP codes 78746, 78734, 78738, 78732, 78733, 78669.</p>
+
+<div class="accordion" id="gadsAccordion">
+    {% for ag in google_ads %}
+    <div class="accordion-item">
+        <h6 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#gads{{ loop.index }}">{{ ag.name }}</button></h6>
+        <div id="gads{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#gadsAccordion">
+            <div class="accordion-body">
+                <h6>Keywords <small class="text-muted">(phrase match)</small></h6>
+                <div class="bg-light p-2 rounded mb-3" onclick="copyBlock(this)" style="cursor:pointer">
+                    <code class="small">{% for kw in ag.keywords %}"{{ kw }}"<br>{% endfor %}</code>
+                </div>
+                <h6>Headlines <small class="text-muted">(max 30 chars)</small></h6>
+                <div class="bg-light p-2 rounded mb-3" onclick="copyBlock(this)" style="cursor:pointer">
+                    <code class="small">{% for h in ag.headlines %}{{ h }}<br>{% endfor %}</code>
+                </div>
+                <h6>Descriptions <small class="text-muted">(max 90 chars)</small></h6>
+                <div class="bg-light p-2 rounded" onclick="copyBlock(this)" style="cursor:pointer">
+                    <code class="small">{% for d in ag.descriptions %}{{ d }}<br>{% endfor %}</code>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<h6 class="mt-4 text-green">Negative Keywords <small class="text-muted">(add to all campaigns)</small></h6>
+<div class="bg-light p-2 rounded" onclick="copyBlock(this)" style="cursor:pointer">
+    <code class="small">diy, home depot, lowes, rent, job, hiring, salary, indoor, termite, rodent, roach, bed bug, apartment</code>
+</div>
+</div>
+
+<!-- ════════ FACEBOOK ADS ════════ -->
+<div class="tab-pane fade" id="facebook">
+<h5 class="text-green mb-3">Facebook / Instagram Ads</h5>
+<p class="text-muted small mb-4">Create a Meta Business Suite account at <strong>business.facebook.com</strong>. Set up a Lead Generation campaign.</p>
+
+<div class="area-card mb-3">
+    <h6>Campaign Settings</h6>
+    <table class="table table-sm small mb-0">
+        <tr><td class="fw-bold" style="width:180px">Objective</td><td>Lead Generation</td></tr>
+        <tr><td class="fw-bold">Budget</td><td>$3-5/day ($90-150/mo)</td></tr>
+        <tr><td class="fw-bold">Location</td><td>10-mile radius around Lakeway, TX (30.3913, -97.9461)</td></tr>
+        <tr><td class="fw-bold">Age</td><td>30 - 65</td></tr>
+        <tr><td class="fw-bold">Demographics</td><td>Homeowners</td></tr>
+        <tr><td class="fw-bold">Interests</td><td>Lawn care, Gardening, Home & Garden, Home improvement, Landscaping</td></tr>
+        <tr><td class="fw-bold">Exclude</td><td>People who work in: Landscaping, Lawn care services</td></tr>
+        <tr><td class="fw-bold">Placements</td><td>Facebook Feed, Instagram Feed, Instagram Stories (start here)</td></tr>
+    </table>
+</div>
+
+<h6 class="text-green">Ad Copy Options <small class="text-muted">(click to copy)</small></h6>
+{% for ad in facebook_ads %}
+<div class="area-card mb-2 post-card" onclick="copyPost(this)" style="cursor:pointer">
+    <p class="small fw-bold mb-1">{{ ad.headline }}</p>
+    <p class="small text-muted mb-0 post-text">{{ ad.text }}</p>
+</div>
+{% endfor %}
+
+<div class="area-card mt-3">
+    <h6>Lead Form Fields</h6>
+    <ol class="small mb-0">
+        <li>Full Name (pre-filled)</li>
+        <li>Email (pre-filled)</li>
+        <li>Phone Number (pre-filled)</li>
+        <li>Custom: "What service are you interested in?" &mdash; Weed Control / Fertilization / Full Program / Not Sure</li>
+    </ol>
+</div>
+
+<div class="area-card mt-3">
+    <h6>Facebook Pixel</h6>
+    <p class="small mb-1">Your site already has the Facebook Pixel code built in. Just add your Pixel ID as the <code>FB_PIXEL_ID</code> environment variable in Railway and it activates automatically.</p>
+</div>
+</div>
+
+<!-- ════════ NEXTDOOR ════════ -->
+<div class="tab-pane fade" id="nextdoor">
+<h5 class="text-green mb-3">Nextdoor Posts <small class="text-muted">(free)</small></h5>
+<p class="text-muted small mb-4">Claim your business at <strong>business.nextdoor.com</strong>. Post 2x/week. Be helpful, not salesy.</p>
+
+{% for post in nextdoor_posts %}
+<div class="area-card mb-3 post-card" onclick="copyPost(this)" style="cursor:pointer">
+    <div class="d-flex justify-content-between mb-2">
+        <span class="blog-tag">{{ post.type }}</span>
+        <small class="text-muted">{{ post.when }}</small>
+    </div>
+    <p class="small mb-0 post-text">{{ post.text }}</p>
+</div>
+{% endfor %}
+</div>
+
+<!-- ════════ DOOR HANGERS ════════ -->
+<div class="tab-pane fade" id="doorhangers">
+<h5 class="text-green mb-3">Door Hanger PDFs</h5>
+<p class="text-muted small mb-3">Click to generate a print-ready PDF for each neighborhood. Print at VistaPrint or GotPrint (1,000 for ~$100, 14pt cardstock).</p>
+
+<div class="row g-3">
+    {% for zone, hoods in door_hanger_zones.items() %}
+    <div class="col-md-6">
+        <div class="area-card">
+            <h6 class="text-green">{{ zone }}</h6>
+            {% for hood in hoods %}
+            <a href="/tools/door-hanger?neighborhood={{ hood.name | urlencode }}&code={{ hood.code }}" target="_blank" class="d-flex justify-content-between align-items-center py-1 text-decoration-none">
+                <span class="small">{{ hood.name }}</span>
+                <span class="badge bg-green">PDF <i class="bi bi-download"></i></span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+
+<!-- ════════ SETUP CHECKLIST ════════ -->
+<div class="tab-pane fade" id="setup">
+<h5 class="text-green mb-3">One-Time Setup Checklist</h5>
+
+<div class="area-card mb-3">
+    <h6>1. Domain & Email</h6>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c1"><label class="form-check-label small" for="c1">Register <strong>texasturfpros.com</strong> at Cloudflare Registrar</label></div>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c2"><label class="form-check-label small" for="c2">Point DNS CNAME to Railway deployment</label></div>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c3"><label class="form-check-label small" for="c3">Set up Google Workspace ($7/mo) for cory@texasturfpros.com</label></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" id="c4"><label class="form-check-label small" for="c4">Configure SMTP env vars in Railway (SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD)</label></div>
+</div>
+<div class="area-card mb-3">
+    <h6>2. Google Business Profile</h6>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c5"><label class="form-check-label small" for="c5">Create profile at business.google.com</label></div>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c6"><label class="form-check-label small" for="c6">Category: "Lawn Care Service" + "Weed Control Service"</label></div>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c7"><label class="form-check-label small" for="c7">Set service area: Lakeway, Bee Cave, Westlake Hills, Spicewood</label></div>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c8"><label class="form-check-label small" for="c8">Add phone, website, hours, services with prices</label></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" id="c9"><label class="form-check-label small" for="c9">Start verification (postcard ~5-7 days)</label></div>
+</div>
+<div class="area-card mb-3">
+    <h6>3. Ad Accounts & Tracking</h6>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c10"><label class="form-check-label small" for="c10">Create Google Ads account at ads.google.com</label></div>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c11"><label class="form-check-label small" for="c11">Add GA_MEASUREMENT_ID env var in Railway</label></div>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c12"><label class="form-check-label small" for="c12">Add GOOGLE_ADS_ID and GOOGLE_ADS_CONVERSION env vars</label></div>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c13"><label class="form-check-label small" for="c13">Create Meta Business Suite at business.facebook.com</label></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" id="c14"><label class="form-check-label small" for="c14">Add FB_PIXEL_ID env var in Railway</label></div>
+</div>
+<div class="area-card mb-3">
+    <h6>4. Social Pages</h6>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c15"><label class="form-check-label small" for="c15">Create Facebook Business Page: "Texas Turf Pros"</label></div>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c16"><label class="form-check-label small" for="c16">Create Instagram Business account, link to Facebook</label></div>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c17"><label class="form-check-label small" for="c17">Claim Nextdoor Business page at business.nextdoor.com</label></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" id="c18"><label class="form-check-label small" for="c18">Submit to directories: Yelp, Angi, Thumbtack, HomeAdvisor, BBB</label></div>
+</div>
+<div class="area-card">
+    <h6>5. Print</h6>
+    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" id="c19"><label class="form-check-label small" for="c19">Order 1,000 door hangers from VistaPrint ($80-120)</label></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" id="c20"><label class="form-check-label small" for="c20">Order 25 yard signs from BuildASign ($75-100)</label></div>
+</div>
+</div>
+
+        </div><!-- /tab-content -->
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function copyPost(el) {
+    var t = el.querySelector('.post-text');
+    if (t) {
+        navigator.clipboard.writeText(t.textContent.trim());
+        var b = el.querySelector('.copied-badge');
+        if (b) { b.style.opacity = '1'; setTimeout(function(){ b.style.opacity = '0'; }, 1500); }
+    }
+}
+function copyBlock(el) {
+    navigator.clipboard.writeText(el.textContent.trim());
+    el.style.background = '#e8f5e9';
+    setTimeout(function(){ el.style.background = ''; }, 1000);
+}
+</script>
+{% endblock %}

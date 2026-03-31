@@ -27,3 +27,13 @@
 </section>
 
 {% endblock %}
+
+{% block scripts %}
+<!-- Conversion tracking fires on thank-you page only -->
+{% if gads_conversion %}
+<script>gtag('event','conversion',{'send_to':'{{ gads_conversion }}'});</script>
+{% endif %}
+{% if fb_pixel %}
+<script>fbq('track','Lead');</script>
+{% endif %}
+{% endblock %}

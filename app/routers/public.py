@@ -169,7 +169,17 @@ POSTS_BY_SLUG = {p["slug"]: p for p in BLOG_POSTS}
 
 def _ctx(request: Request, **extra):
     """Common template context."""
-    return {"request": request, "now": datetime.now(), **extra}
+    from ..config import get_settings
+    s = get_settings()
+    return {
+        "request": request,
+        "now": datetime.now(),
+        "ga_id": s.ga_measurement_id,
+        "gads_id": s.google_ads_id,
+        "gads_conversion": s.google_ads_conversion,
+        "fb_pixel": s.fb_pixel_id,
+        **extra,
+    }
 
 
 # ── Page routes ──────────────────────────────────────────────
@@ -280,11 +290,12 @@ async def quote_submit(
         name, email, phone, address, services_str, source,
     )
 
-    # Send notification email to Cory
+    # Send notification to Cory + auto-reply to lead
     try:
         from ..services.email_service import send_email
 
-        body = f"""
+        # Notification to Cory
+        notify_body = f"""
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
             <div style="background:#2d6a4f;color:#fff;padding:20px;text-align:center;">
                 <h2 style="margin:0;">New Quote Request</h2>
@@ -309,13 +320,223 @@ async def quote_submit(
         await send_email(
             to="cory@txturfpros.com",
             subject=f"New Quote Request from {name} — {address}",
-            body_html=body,
+            body_html=notify_body,
+        )
+
+        # Auto-reply to the lead
+        first_name = name.split()[0]
+        auto_reply = f"""
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+            <div style="background:#2d6a4f;color:#fff;padding:24px;text-align:center;">
+                <h2 style="margin:0;font-size:22px;">Texas Turf Pros</h2>
+                <p style="margin:6px 0 0;opacity:.8;font-size:14px;">Professional Lawn Care &bull; Lakeway, TX</p>
+            </div>
+            <div style="padding:24px;background:#fff;">
+                <p style="font-size:16px;">Hi {first_name},</p>
+                <p>Thanks for requesting a quote from Texas Turf Pros! I received your information and will review your property details personally.</p>
+                <p><strong>Here's what happens next:</strong></p>
+                <ol style="line-height:1.8;">
+                    <li>I'll review your property at <strong>{address}</strong></li>
+                    <li>I'll put together a custom treatment plan based on your lawn's needs</li>
+                    <li>You'll hear from me within 24 hours with your quote</li>
+                </ol>
+                <div style="background:#f0f7f3;border-left:4px solid #2d6a4f;padding:16px;margin:20px 0;border-radius:4px;">
+                    <p style="margin:0;font-size:14px;"><strong>Why Texas Turf Pros?</strong></p>
+                    <ul style="margin:8px 0 0;padding-left:20px;font-size:14px;line-height:1.6;">
+                        <li>TDA Licensed Applicator &mdash; every treatment meets state regulations</li>
+                        <li>Owner-operated &mdash; I personally treat every lawn</li>
+                        <li>No contracts &mdash; stay because you're happy, not because you're locked in</li>
+                        <li>Products and timing tailored for Central Texas soil &amp; turf</li>
+                    </ul>
+                </div>
+                <p>In the meantime, feel free to call or text me directly:</p>
+                <p style="text-align:center;margin:16px 0;">
+                    <a href="tel:+15129837070" style="display:inline-block;background:#2d6a4f;color:#fff;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:bold;font-size:16px;">(512) 983-7070</a>
+                </p>
+                <p>Looking forward to helping you get a great-looking lawn!</p>
+                <p>Cory<br><span style="color:#666;font-size:13px;">Owner, Texas Turf Pros<br>TDA Licensed Applicator</span></p>
+            </div>
+            <div style="padding:12px 20px;font-size:11px;color:#999;text-align:center;background:#f9f9f9;">
+                TX TURF PROS LLC &bull; Lakeway, TX &bull; <a href="https://texasturfpros.com" style="color:#2d6a4f;">texasturfpros.com</a>
+            </div>
+        </div>
+        """
+        await send_email(
+            to=email,
+            subject=f"{first_name}, your lawn care quote request is confirmed!",
+            body_html=auto_reply,
         )
     except Exception as exc:
-        log.error("Failed to send lead notification: %s", exc)
+        log.error("Failed to send lead emails: %s", exc)
 
     return request.app.state.templates.TemplateResponse(
         "public/quote_thanks.html", _ctx(request, name=name.split()[0])
+    )
+
+
+# ── Marketing tools dashboard ────────────────────────────────
+
+CONTENT_CALENDAR = {
+    "Week 1 — Launch": [
+        {"day": "Monday", "platform": "Facebook", "topic": "Introduction Post",
+         "text": "Hey Lakeway neighbors! I'm Cory, owner of Texas Turf Pros. I'm a TDA Licensed Applicator specializing in weed control and fertilization right here in the Hill Country. If your lawn has been taken over by weeds or is looking thin after winter, I can help. DM me or visit texasturfpros.com for a free quote. Serving Lakeway, Bee Cave, Westlake & Spicewood."},
+        {"day": "Wednesday", "platform": "Instagram", "topic": "Seasonal Tip",
+         "text": "Spring is HERE in Central Texas and that means it's go-time for your lawn. Right now is the perfect window for Round 2 pre-emergent + your first fertilizer application. If you missed Round 1 in February, don't worry - post-emergent treatments can still get your lawn back on track. Drop a comment if you have questions about your lawn! #LakewayTX #LawnCare #WeedControl #TexasTurf #HillCountryLawns"},
+        {"day": "Friday", "platform": "Facebook", "topic": "Service Area Spotlight",
+         "text": "Driving through Rough Hollow this week and the lawns are waking up fast. If you're in Rough Hollow, Flintrock Falls, or Lakeway Highlands - now is the time to get on a weed control program before the warm-season weeds explode. We're booking this week. Free quotes at texasturfpros.com or call/text (512) 983-7070."},
+        {"day": "Saturday", "platform": "Instagram Story", "topic": "Behind the Scenes",
+         "text": "Loading up the truck for today's treatments. Pre-emergent + fertilizer going down across Lakeway today. Your lawn's best season starts with the right products at the right time. Book your spot: link in bio"},
+    ],
+    "Week 2 — Education": [
+        {"day": "Monday", "platform": "Facebook", "topic": "Educational Post",
+         "text": "One question I get all the time: 'Why do I need TWO rounds of pre-emergent?' Great question. A single application breaks down in 8-12 weeks. Here in Central Texas, our growing season runs March through November - way longer than one application covers. Round 2 in April extends your weed barrier through the summer. It's the difference between a few weeds and a weed takeover. Want to get on a program? texasturfpros.com"},
+        {"day": "Wednesday", "platform": "Instagram", "topic": "Common Weeds ID",
+         "text": "Know your enemy. The top 5 weeds I'm seeing in Lakeway lawns right now: 1) Crabgrass - spreading, light green 2) Dandelions - the yellow flower everyone knows 3) Clover - round leaves, white flowers 4) Nutsedge - tall, V-shaped blade 5) Henbit - purple flowers, square stem. All treatable with selective herbicides that won't harm your Bermuda or St. Augustine. DM for a free lawn assessment. #LawnCare #WeedControl #LakewayTX"},
+        {"day": "Thursday", "platform": "Google Business", "topic": "Seasonal Update",
+         "text": "Now booking Round 2 pre-emergent + fertilizer applications across Lakeway, Bee Cave, Westlake, and Spicewood. This is your last chance to get a weed barrier down before summer. Free quotes - call (512) 983-7070 or visit texasturfpros.com."},
+        {"day": "Friday", "platform": "Facebook", "topic": "Neighborhood Focus",
+         "text": "Bee Cave homeowners - Falconhead, Spanish Oaks, Sweetwater - we're scheduling treatments in your area next week. If your lawn needs some attention before summer hits, now's the perfect time to start. First treatment $20 off with code NEIGHBOR. Book at texasturfpros.com"},
+    ],
+    "Week 3 — Social Proof": [
+        {"day": "Monday", "platform": "Facebook", "topic": "Customer Value",
+         "text": "What does professional weed control actually cost? Less than you think. Our treatments start at $55 and cover pre-emergent, post-emergent, AND fertilizer. Compare that to buying products at Home Depot, renting a sprayer, and spending your Saturday trying to figure out application rates. We're TDA Licensed, meaning we use commercial-grade products you can't buy retail. Free quotes: texasturfpros.com"},
+        {"day": "Wednesday", "platform": "Instagram", "topic": "Tips for Homeowners",
+         "text": "Mowing tip for Central TX: Bermuda grass should be cut at 1.5-2 inches. St. Augustine at 3-3.5 inches. Cutting too short stresses your turf and invites weeds. Most people cut their St. Augustine WAY too short. Raise that mowing deck! Questions about your lawn type? DM me. #LawnTips #CentralTexas #LakewayLawns"},
+        {"day": "Friday", "platform": "Facebook", "topic": "5-Round Program",
+         "text": "Here's what a full year of lawn care looks like with Texas Turf Pros:\n\nRound 1 (Feb-Mar): Pre-emergent + fertilizer\nRound 2 (Apr-May): Pre-emergent + weed control\nRound 3 (Jun-Jul): Fertilizer + grub preventive\nRound 4 (Sep-Oct): Fertilizer + weed control\nRound 5 (Nov-Dec): Winterizer\n\nStarting at $55/treatment based on lot size. No contracts. Cancel anytime. Your lawn covered, year-round. texasturfpros.com"},
+        {"day": "Saturday", "platform": "Instagram Story", "topic": "Treatment Day",
+         "text": "Saturday morning treatments in The Hills and Lakeway Highlands. Products going down: Dimension pre-emergent + Celsius post-emergent spot treatment + slow-release fertilizer. Your lawn on a program is a lawn that wins. Book: link in bio"},
+    ],
+    "Week 4 — Push & Convert": [
+        {"day": "Monday", "platform": "Facebook", "topic": "Urgency Post",
+         "text": "Fair warning Lakeway: the weed pressure is about to get REAL. Once soil temps hit 65+ (which is any day now), every weed seed in your soil starts germinating. If you don't have a pre-emergent barrier down yet, you're about to see crabgrass, spurge, and nutsedge everywhere. It's not too late for Round 2 - but it will be soon. Get on the schedule: texasturfpros.com or call (512) 983-7070."},
+        {"day": "Tuesday", "platform": "Google Business", "topic": "Service Highlight",
+         "text": "Grub preventive season is coming up in May-June. White grubs feed on grass roots underground - you won't see the damage until it's too late (brown, spongy patches in late summer). A preventive application of imidacloprid now stops them before they hatch. Add it to your program - call (512) 983-7070."},
+        {"day": "Wednesday", "platform": "Instagram", "topic": "Q&A Post",
+         "text": "FAQ: 'Is it safe for my dog?'\n\nYes! After application, we recommend keeping pets off the treated area until the product dries - typically 1-2 hours. Once dry, it's bound to the soil and safe for pets and kids. We always send a post-service email with specific care instructions after every treatment.\n\nMore questions? DM me anytime. #LawnCare #PetSafe #LakewayTX"},
+        {"day": "Friday", "platform": "Facebook", "topic": "Westlake Focus",
+         "text": "Westlake Hills homeowners - we're expanding our route in 78746. If you're in Rob Roy, Davenport Ranch, Eanes Creek, or anywhere in Westlake, we'd love to add you to the schedule. Same professional weed control and fertilization that Lakeway homeowners are getting. First treatment $20 off. texasturfpros.com"},
+    ],
+}
+
+GOOGLE_ADS = [
+    {
+        "name": "Ad Group 1: Weed Control",
+        "keywords": ["weed control lakeway", "weed removal lakeway tx", "weed killer service bee cave",
+                     "post emergent weed control austin", "pre emergent lakeway", "weed spray service 78734",
+                     "lawn weed treatment lakeway", "weed control westlake tx", "weed control bee cave"],
+        "headlines": ["Lakeway Weed Control Pros", "TDA Licensed Applicator", "Free Weed Control Quote",
+                      "Weed Control from $55", "Lakeway & Bee Cave Area", "Same-Week Service",
+                      "Kill Weeds, Not Your Grass", "Licensed & Insured"],
+        "descriptions": [
+            "Professional weed control for Lakeway, Bee Cave & Spicewood. Pre & post-emergent programs.",
+            "TDA Licensed Applicator. Kill weeds without harming your turf. Free quotes — call today.",
+            "Serving Rough Hollow, Flintrock Falls, Spanish Oaks & more. Results in 7-14 days.",
+        ],
+    },
+    {
+        "name": "Ad Group 2: Fertilization",
+        "keywords": ["lawn fertilization lakeway", "fertilizer service lakeway tx", "lawn feeding bee cave",
+                     "lawn fertilization near me", "fertilization program 78738", "lawn treatment lakeway",
+                     "fertilization service westlake tx", "lawn care program lakeway"],
+        "headlines": ["Lakeway Lawn Fertilization", "5-Round Lawn Program", "Fertilization from $55",
+                      "Year-Round Lawn Care", "Green Lawn Guaranteed", "Local Lakeway Expert",
+                      "TDA Licensed Pro", "Free Estimate Today"],
+        "descriptions": [
+            "Year-round fertilization programs for Central Texas lawns. Bermuda & St. Augustine experts.",
+            "5-round lawn care program starting at $55/treatment. No contracts. Locally owned in Lakeway.",
+            "Professional fertilization tuned for Hill Country soil. Free quote in minutes.",
+        ],
+    },
+    {
+        "name": "Ad Group 3: Pest & Grub Control",
+        "keywords": ["lawn pest control lakeway", "grub control lakeway tx", "fire ant treatment lakeway",
+                     "chinch bug treatment bee cave", "lawn insect control 78734", "grub prevention lakeway"],
+        "headlines": ["Grub & Pest Control", "Fire Ant Treatment", "Stop Grubs Before Damage",
+                      "Lawn Pest Control $65", "Licensed Applicator", "Lakeway Pest Experts"],
+        "descriptions": [
+            "Grub preventive + fire ant + chinch bug treatments for Lakeway area lawns. TDA Licensed.",
+            "Don't wait for brown patches. Preventive grub control stops damage before it starts.",
+        ],
+    },
+    {
+        "name": "Ad Group 4: Irrigation",
+        "keywords": ["irrigation repair lakeway", "sprinkler repair lakeway tx", "irrigation service bee cave",
+                     "sprinkler system repair 78738", "irrigation diagnostic lakeway"],
+        "headlines": ["Irrigation Repair $85", "Sprinkler System Repair", "Lakeway Irrigation Pro",
+                      "Fix Sprinklers Fast", "Diagnostic + Repair", "Licensed & Insured"],
+        "descriptions": [
+            "Irrigation diagnostics starting at $85. Zone-by-zone inspection, head repairs, programming.",
+            "Broken sprinkler heads? Coverage gaps? We diagnose and fix same-week. Lakeway & Bee Cave.",
+        ],
+    },
+]
+
+FACEBOOK_ADS = [
+    {"headline": "Your Lawn Deserves Better — Weed Control from $55",
+     "text": "Tired of weeds taking over your lawn? Texas Turf Pros provides professional weed control and fertilization for Lakeway, Bee Cave, Westlake & Spicewood homes. TDA Licensed Applicator. No contracts. Get a free quote today."},
+    {"headline": "Lakeway's Trusted Lawn Care Pro",
+     "text": "Hi, I'm Cory - owner and sole operator of Texas Turf Pros. I personally treat every lawn with commercial-grade products tailored for our Hill Country soil. Pre-emergent, post-emergent, fertilization, pest control. Starting at $55. Get your free quote."},
+    {"headline": "5-Round Lawn Care Program — Starting at $55",
+     "text": "Year-round weed control and fertilization designed for Central Texas. 5 treatments, perfectly timed to your lawn's growth cycle. Bermuda and St. Augustine specialists. No contracts, cancel anytime. Serving Lakeway, Bee Cave, Westlake & Spicewood."},
+    {"headline": "First Treatment $20 Off — Code: NEIGHBOR",
+     "text": "New customers get $20 off their first treatment. Professional weed control, fertilization, and pest control from a TDA Licensed Applicator. Locally owned in Lakeway. Free quotes at texasturfpros.com or call (512) 983-7070."},
+]
+
+NEXTDOOR_POSTS = [
+    {"type": "Introduction", "when": "Week 1",
+     "text": "Hi neighbors! I'm Cory, owner of Texas Turf Pros. I'm a TDA Licensed Applicator offering professional weed control and fertilization right here in our community. I live in the Lakeway area and treat every lawn personally - no subcontractors. If your lawn needs help getting ready for spring, I'd love to give you a free assessment. You can reach me at (512) 983-7070 or texasturfpros.com. Happy to answer any lawn care questions!"},
+    {"type": "Seasonal Tip", "when": "Week 1",
+     "text": "Lakeway lawn tip: If you haven't put down pre-emergent yet, it's not too late for Round 2. This application is your last line of defense before summer weeds take over. Soil temps are climbing fast. Pro tip: water it in within 14 days of application to activate it. Questions? Happy to help - just reply here."},
+    {"type": "Educational", "when": "Week 2",
+     "text": "Seeing a lot of nutsedge popping up in Lakeway lawns this week. That tall, light-green grass-like weed growing faster than everything else? That's nutsedge. Regular weed killer won't touch it - you need a specialized herbicide like Certainty or SedgeHammer. If it's just a few, pull them. If it's taking over, a professional treatment is the way to go. Happy to answer questions!"},
+    {"type": "Community", "when": "Week 2",
+     "text": "Heads up Lakeway & Bee Cave neighbors - I'm treating lawns in Rough Hollow, Falconhead, and The Hills this week. If you've been thinking about getting on a weed control program, this is a great time to start. I can swing by for a free lawn assessment while I'm in the area. Call/text (512) 983-7070. Mention Nextdoor for $10 off your first treatment!"},
+    {"type": "Seasonal Tip", "when": "Week 3",
+     "text": "Central Texas irrigation tip: We're heading into the hot months. Now is the time to check your sprinkler system before you NEED it. Walk each zone and look for: broken heads, heads not popping up, dry spots, and overspray on driveways. A quick check now prevents dead spots in August. I offer $85 irrigation diagnostics if you want a professional walkthrough."},
+    {"type": "Expert Advice", "when": "Week 4",
+     "text": "Question I get a lot: 'What's the difference between the stuff at Home Depot and what you use?' The main differences: 1) We use commercial-grade concentrates, not diluted retail products. 2) We can access restricted-use products only available to licensed applicators. 3) We calibrate application rates precisely for your lot size. 4) Products like Celsius and Certainty aren't available retail. It's the difference between a good result and a professional result."},
+    {"type": "Offer", "when": "Week 4",
+     "text": "Spring special for our Nextdoor neighbors: $20 off your first weed control or fertilization treatment. No contracts, no obligations. Just great lawn care from a local, licensed pro. I serve Lakeway, Bee Cave, Westlake, and Spicewood. Call/text (512) 983-7070 or visit texasturfpros.com. Use code NEIGHBOR at checkout."},
+]
+
+DOOR_HANGER_ZONES = {
+    "Lakeway": [
+        {"name": "Rough Hollow", "code": "ROUGHHOLLOW"},
+        {"name": "Lakeway Highlands", "code": "HIGHLANDS"},
+        {"name": "The Hills", "code": "THEHILLS"},
+        {"name": "Flintrock Falls", "code": "FLINTROCK"},
+        {"name": "Tuscan Village", "code": "TUSCAN"},
+    ],
+    "Westlake": [
+        {"name": "Westlake Hills", "code": "WESTLAKE"},
+        {"name": "Rob Roy", "code": "ROBROY"},
+        {"name": "Davenport Ranch", "code": "DAVENPORT"},
+    ],
+    "Bee Cave": [
+        {"name": "Falconhead", "code": "FALCON"},
+        {"name": "Spanish Oaks", "code": "SPANOAKS"},
+        {"name": "Sweetwater", "code": "SWEETWTR"},
+    ],
+    "Spicewood": [
+        {"name": "West Cypress Hills", "code": "CYPRESS"},
+        {"name": "Briarcliff", "code": "BRIARCLF"},
+    ],
+}
+
+
+@router.get("/tools", response_class=HTMLResponse)
+async def tools_dashboard(request: Request):
+    return request.app.state.templates.TemplateResponse(
+        "public/tools.html",
+        _ctx(
+            request,
+            content_calendar=CONTENT_CALENDAR,
+            google_ads=GOOGLE_ADS,
+            facebook_ads=FACEBOOK_ADS,
+            nextdoor_posts=NEXTDOOR_POSTS,
+            door_hanger_zones=DOOR_HANGER_ZONES,
+        ),
     )
 
 
